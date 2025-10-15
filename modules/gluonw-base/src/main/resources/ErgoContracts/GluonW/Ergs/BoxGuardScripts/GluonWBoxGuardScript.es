@@ -201,8 +201,8 @@
         // We're using 1,000,000,000 because the precision is based on nanoErgs
         val precision: BigInt = (1000000000).toBigInt
 
-        // q* = 0.66
-        val qStar: BigInt = (66 * precision / 100)
+        // q* = 0.99
+        val qStar: BigInt = (99 * precision / 100)
         val rightHandMin: BigInt = SNeutrons * Pt / RErg
         val fusionRatio: BigInt = min(qStar, rightHandMin)
 
