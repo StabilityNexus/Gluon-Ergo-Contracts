@@ -203,8 +203,8 @@
 
         // q* = 0.99
         val qStar: BigInt = (99 * precision / 100)
-        val rightHandMin: BigInt = SNeutrons * Pt / RErg
-        val fusionRatio: BigInt = min(qStar, rightHandMin)
+        val q: BigInt = SNeutrons * Pt / RErg
+        val fusionRatio: BigInt = min(precision * q / (q + precision - qStar), q)
 
         // Calculate the value based on protons
         // Check Protons reduction in OutBox
