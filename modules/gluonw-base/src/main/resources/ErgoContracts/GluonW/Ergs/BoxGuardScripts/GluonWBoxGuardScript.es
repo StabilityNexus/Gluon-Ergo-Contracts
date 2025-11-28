@@ -4,18 +4,22 @@
     // Description      :
     // Type             : Guard Script
     // Author           : Kii, LGD
-    // Last Modified    : 2024-11-16
-    // Version          : v 2.0
-    // Status           : V2 in Test
+    // Last Modified    : 2025-11-28
+    // Version          : v 3.0
+    // Status           : V3 on Mainnet
 
     // ===== Version Logs ===== //
     // - 1.0: GluonWBox implemented without dev fees
     // - 1.1: Dev fees and UI fees implemented
     // - 2.0: Oracle check is enforced.
+    // - 3.0: Update to Gluon Z without new volume equation.
+    //        - Update fusion ratio to 0.99 (reserve ratio = 1.01)
+    //        - Update beta-decay fee slope from 0.5 to 1.
+    //        - Update normalized fusion ratio equation to the one defined in Gluon Z.
+    //        - Remove BuyBack contract address compile-time constant. 
 
     // ===== Contract Hard-Coded Constants ===== //
     // val _MinFee:                     Long
-    // val _OracleFeePk:                Coll[Byte]
     // val _OraclePoolNFT:              Coll[Byte]
     // val _OracleBuybackNFT:           Coll[Byte]
 
@@ -45,7 +49,7 @@
 
     // For all of the first 4 tx:
     // Inputs: GluonWBox, UserPk
-    // DataInputs: GoldOracle
+    // DataInputs: UsdV2Oracle
     // Outputs: GluonWBox, UserPk
 
     // For the fifth transaction:
@@ -194,8 +198,8 @@
         val _fissionedErg: Long = IN_GLUONW_BOX.value - _MinFee
         val RErg: BigInt = _fissionedErg.toBigInt
         // Price of Gold
-        // Gold Oracle data input value has units of: nanoErg / kg
-        // We want units of: nanoErg / g
+        // USD Oracle data input value has units of: nanoErg / USD
+        // We want units of: nanoErg / mUSD
         val Pt: BigInt = CONTEXT.dataInputs(0).R4[Long].get.toBigInt / 1000
 
         // We're using 1,000,000,000 because the precision is based on nanoErgs
@@ -285,7 +289,7 @@
             val devFeeAddressAndPayout: (Coll[Byte], BigInt) =
                 (TREASURY_MULTISIG.propBytes, devFeePayout)
             val oracleFeeAddressAndPayout: (Coll[Byte], BigInt) =
-                (_OracleFeePk, oracleFeePayout)
+                (Coll[Byte](), oracleFeePayout)
 
             if (isBetaDecayMinusTx || isBetaDecayPlusTx) // Fission and Fusion does not need Oracle
             {
@@ -339,8 +343,6 @@
                         val oracleBuybackInputBox: Box = INPUTS(INPUTS.size - 1)
                         allOf(
                             Coll(
-                                oracleOutput.propositionBytes       == fees(1)._1,
-                                oracleOutput.propositionBytes       == oracleBuybackInputBox.propositionBytes,
                                 oracleOutput.tokens(0)._1           == _OracleBuybackNFT,
                                 oracleOutput.value.toBigInt         == oracleBuybackInputBox.value.toBigInt + fees(1)._2 + _MinFee
                             )
