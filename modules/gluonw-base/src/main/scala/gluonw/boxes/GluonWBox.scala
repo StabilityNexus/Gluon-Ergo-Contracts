@@ -38,7 +38,9 @@ import scala.jdk.CollectionConverters.ListHasAsScala
 
 object GluonWBoxConstants {
   val PRECISION: Long = 1_000_000_000L
-  val TOTAL_CIRCULATING_SUPPLY: Long = 100_000_000L * PRECISION
+  val DECIMALS: Double = 3.0
+  val DECIMALS_FACTOR: Long = math.pow(10, DECIMALS).toLong
+  val TOTAL_CIRCULATING_SUPPLY: Long = 1_000_000_000_000_000L * DECIMALS_FACTOR
   val PROTONS_TOTAL_CIRCULATING_SUPPLY: Long = TOTAL_CIRCULATING_SUPPLY
   val NEUTRONS_TOTAL_CIRCULATING_SUPPLY: Long = TOTAL_CIRCULATING_SUPPLY
   // This is the required fee for the box to be in existence. It's the minimum
@@ -48,6 +50,15 @@ object GluonWBoxConstants {
   val BUCKETS: Int = 14 // Tracking volume of approximately 14 days
   val BLOCKS_PER_VOLUME_BUCKET
     : Int = 720 // Approximately 1 day per volume bucket
+
+  // Units:
+  // Reserve Units: nanoErg
+  // Neutron Units: mUSD
+  // Proton Units: mProton
+  val INITIAL_RESERVE: Long = 1L * Parameters.OneErg
+  val INITIAL_NEUTRON_CIRCULATING_SUPPLY: Long = 530 // i.e. 0.53 
+  val INITIAL_PROTON_CIRCULATING_SUPPLY: Long = 10 // i.e 0.01 
+
 }
 
 case class GluonWBox(

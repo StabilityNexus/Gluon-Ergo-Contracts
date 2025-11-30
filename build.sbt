@@ -5,11 +5,11 @@ name := """gluonw"""
 organization := "io.ergo"
 
 version := "1.0"
-scalaVersion := "2.13.9"
+scalaVersion := "2.13.18"
 
 lazy val commonSettings = List(
   scalacOptions ++= commonScalacOptions,
-  scalaVersion := "2.13.9",
+  scalaVersion := "2.13.18",
   organization := "io.ergo",
   version := "0.1",
   resolvers ++= Seq(

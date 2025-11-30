@@ -23,7 +23,6 @@ object GluonWBoxContract {
       Contract.build(
         ContractScripts.GluonWBoxGuardScript.contractScript,
         "_MinFee" -> minFee,
-        "_OracleFeePk" -> oracleConfig.paymentAddress.getErgoAddress.contentBytes,
         "_OracleBuybackNFT" -> oracleConfig.paymentNft.id.getBytes,
         "_OraclePoolNFT" -> oracleConfig.nft.id.getBytes
       ),

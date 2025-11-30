@@ -46,23 +46,23 @@ object BoxCreation extends App {
 
   val tokens: Seq[(String, (String, Long))] = Seq(
     (
-      "GluonW Test NFT 1.6",
+      "Gluon Dollar Reactor NFT",
       (
-        "GluonW NFTby DJed Alliance v1.6: VarPhiBeta Implemented. This is a test Token.",
+        "NFT uniquely identifying the Gluon Dollar reactor.",
         1L
       )
     ),
     (
-      "GluonW Test GAU 1.6",
+      "USDG",
       (
-        "GluonW GAU Neutrons by DJed Alliance v1.6: VarPhiBeta Implemented. This is a test Token.",
+        "Gluon Dollar",
         GluonWBoxConstants.TOTAL_CIRCULATING_SUPPLY
       )
     ),
     (
-      "GluonW Test GAUC 1.6",
+      "USDGYL",
       (
-        "GluonW GAUC Protons by DJed Alliance v1.6: VarPhiBeta Implemented. This is a test Token.",
+        "Gluon Dollar Leverage Yield",
         GluonWBoxConstants.TOTAL_CIRCULATING_SUPPLY
       )
     )
@@ -76,7 +76,7 @@ object BoxCreation extends App {
     val BURN: String = "burn"
 
     // SET RUN TX HERE
-    val runTx: String = MUTATE
+    val runTx: String = MERGE
 
     System.out.println(s"Running $runTx tx")
     val totalSupply: Long = GluonWBoxConstants.TOTAL_CIRCULATING_SUPPLY
@@ -87,13 +87,13 @@ object BoxCreation extends App {
           tokens(1)._1,
           tokens(1)._2._1,
           tokens(1)._2._2,
-          decimals = 9
+          decimals = GluonWBoxConstants.DECIMALS.toInt
         )(client, conf, nodeConf)
         val protonsMintTx = mintTokens(
           tokens(2)._1,
           tokens(2)._2._1,
           tokens(2)._2._2,
-          decimals = 9
+          decimals = GluonWBoxConstants.DECIMALS.toInt
         )(client, conf, nodeConf)
         val gluonWNFTMintTx = mintTokens(
           tokens.head._1,
@@ -102,31 +102,33 @@ object BoxCreation extends App {
         )(client, conf, nodeConf)
 
         protonsMintTx
+
       }
       case MERGE => {
+        
         val nftToken = ErgoToken(GluonWTokens.gluonWBoxNFTId, 1)
-        val sigGoldToken = ErgoToken(GluonWTokens.neutronId, totalSupply)
-        val sigGoldRsvToken =
+        val gluonNeutronToken = ErgoToken(GluonWTokens.neutronId, totalSupply)
+        val gluonProtonToken =
           ErgoToken(GluonWTokens.protonId, totalSupply)
         val gluonWBox: GluonWBox = GluonWBox(
           value =
-            2 * Parameters.OneErg + GluonWBoxConstants.GLUONWBOX_BOX_EXISTENCE_FEE,
+            GluonWBoxConstants.INITIAL_RESERVE + GluonWBoxConstants.GLUONWBOX_BOX_EXISTENCE_FEE,
           tokens = Seq(
             ErgoToken(GluonWTokens.gluonWBoxNFTId, 1),
             ErgoToken(
               GluonWTokens.neutronId,
-              totalSupply - (GluonWBoxConstants.PRECISION / 100)
+              totalSupply - GluonWBoxConstants.INITIAL_NEUTRON_CIRCULATING_SUPPLY
             ),
             ErgoToken(
               GluonWTokens.protonId,
-              totalSupply - (GluonWBoxConstants.PRECISION / 100)
+              totalSupply - GluonWBoxConstants.INITIAL_PROTON_CIRCULATING_SUPPLY
             )
           ),
           lastDayBlockRegister = new LongRegister(client.getHeight)
         )
 
         mergeBox(
-          Seq(nftToken, sigGoldToken, sigGoldRsvToken),
+          Seq(nftToken, gluonNeutronToken, gluonProtonToken),
           Seq(gluonWBox)
         )(client, conf, nodeConf)
       }
