@@ -10,8 +10,8 @@ import {
   TransactionBuilder,
 } from "@fleet-sdk/core";
 import { type BootstrapParameters, type DeploymentConfig, type TokenMetadata, contractConstants } from "./config.ts";
-import { BUCKETS, type ReactorState, adjustedPrice, bucketStart, genesisSupplies, snapshot } from "./math.ts";
-import { type ReactorTokens, reactorAssets, reactorRegisters } from "./reactor.ts";
+import { BUCKETS, type ReactorState, adjustedPrice, bucketStart, genesisSupplies, snapshot } from "../sdk/src/math.ts";
+import { type ReactorTokens, reactorAssets, reactorRegisters } from "../sdk/src/reactor.ts";
 import { type DeploymentRecord, type TokenRecord, templateHashes } from "./records.ts";
 
 /** The state of a new reactor, derived from the bootstrap parameters and the current oracle price. */

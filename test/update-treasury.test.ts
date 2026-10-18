@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { reactorTx, updateTreasuryTx } from "../lib/transactions.ts";
+import { reactorTx, updateTreasuryTx } from "../sdk/src/transactions.ts";
 import {
   PROFILES,
   TOKENS,

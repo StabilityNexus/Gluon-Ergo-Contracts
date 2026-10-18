@@ -69,6 +69,27 @@ export function isHealthy(q: bigint): boolean {
   return q >= Q_LOWER && q <= Q_UPPER;
 }
 
+export interface CrashCushion {
+  untilDepeg: number;
+  untilAdjustment: number;
+}
+
+/** Fraction by which ERG can fall against the peg before neutrons depeg or reactor leaves healthy range. */
+export function crashCushion(q: bigint): CrashCushion {
+  const qFraction = Number(q) / Number(ONE);
+  return {
+    untilDepeg: Math.max(0, 1 - qFraction / 0.99),
+    untilAdjustment: Math.max(0, 1 - qFraction / 0.98),
+  };
+}
+
+/** Proton leverage: q / (1 - q), defined while q < 0.99. */
+export function protonLeverage(q: bigint): number | undefined {
+  if (q >= (99n * ONE) / 100n) return undefined;
+  const qFraction = Number(q) / Number(ONE);
+  return qFraction / (1 - qFraction);
+}
+
 export function snapshot(s: ReactorState, minFee: bigint, oraclePrice: bigint): Snapshot {
   const reserve = s.value - minFee;
   const neutronSupply = s.totalNeutrons - s.neutrons;

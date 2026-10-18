@@ -13,7 +13,8 @@ import { execFileSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { bootstrapCost, bootstrapTransactions, deploymentRecord, planBootstrap, publicKeyOf } from "../lib/bootstrap.ts";
-import { addressOf, erg, loadEnvironment, nodeFor, requireFreshOracle, run, uniqueBox } from "../lib/cli.ts";
+import { addressOf, erg, loadEnvironment, nodeFor, run } from "../lib/cli.ts";
+import { findUniqueBox } from "../sdk/src/node.ts";
 import { compileGluon, compilerVersion } from "../lib/compile.ts";
 import {
   MAX_SEED,
@@ -24,11 +25,12 @@ import {
   readDeployment,
   requireValid,
 } from "../lib/config.ts";
-import { ONE, snapshot, valueOfProtons } from "../lib/math.ts";
-import { oraclePrice } from "../lib/reactor.ts";
+import { ONE, snapshot, valueOfProtons } from "../sdk/src/math.ts";
+import { oraclePrice, requireFreshOracle } from "../sdk/src/oracle.ts";
 import { DEPLOYMENTS_MD, readRecords, renderDeployments, writeRecords } from "../lib/records.ts";
 import { keyFromEnvironment, signTransaction } from "../lib/signer.ts";
 import { consensusIssues, simulateReactor } from "../lib/simulate.ts";
+import { SDK_DATA_TS, renderSdkData } from "./build-sdk-data.ts";
 
 const ROOT = new URL("..", import.meta.url);
 
@@ -64,8 +66,8 @@ run(async () => {
 
   const constants = contractConstants(config);
   const tree = compileGluon(constants, config.network, contractSource(config));
-  const oracle = await uniqueBox(node, constants.oraclePoolNft, "oracle pool");
-  const buyback = await uniqueBox(node, constants.oracleBuybackNft, "oracle buyback", constants.oracleFeeTree);
+  const oracle = await findUniqueBox(node, constants.oraclePoolNft, "oracle pool");
+  const buyback = await findUniqueBox(node, constants.oracleBuybackNft, "oracle buyback", constants.oracleFeeTree);
   requireFreshOracle(oracle, height);
   const price = oraclePrice(oracle);
   const plan = planBootstrap(params, constants.minFee, price, publicKeyOf(config.treasuryAddress), height);
@@ -115,8 +117,9 @@ Simulation        fission, beta decay +, beta decay −, fusion and Adjust Peg a
   records.deployments.push(deploymentRecord(config, plan, price, tree, txs, revision, compilerVersion()));
   writeRecords(records);
   writeFileSync(DEPLOYMENTS_MD, renderDeployments());
+  writeFileSync(SDK_DATA_TS, renderSdkData());
   console.log(`
-Recorded the deployment in deployments/${config.network}.json and Deployments.md. Next:
-- commit both files, and tag the deployed revision: git tag -a ${config.deployment} ${revision.slice(0, 7)} -m "${config.deployment}"
+Recorded the deployment in deployments/${config.network}.json, Deployments.md and sdk/src/deployments/data.ts. Next:
+- commit the three files, and tag the deployed revision: git tag -a ${config.deployment} ${revision.slice(0, 7)} -m "${config.deployment}"
 - push the commit and the tag, so the record's links resolve`);
 });

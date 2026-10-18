@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
-import { ONE, type ReactorState } from "../lib/math.ts";
-import { reactorTx } from "../lib/transactions.ts";
+import { ONE, type ReactorState } from "../sdk/src/math.ts";
+import { reactorTx } from "../sdk/src/transactions.ts";
 import { PROFILES, expectRejected, setup } from "./helpers.ts";
 
 // Port of the Scala HackSpec: spending the reactor without performing any of its transaction types.

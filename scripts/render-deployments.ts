@@ -9,7 +9,7 @@ run(async () => {
   const { values } = parseArgs({ options: { check: { type: "boolean", default: false } } });
   const rendered = renderDeployments();
   if (values.check) {
-    const current = existsSync(DEPLOYMENTS_MD) ? readFileSync(DEPLOYMENTS_MD, "utf8") : "";
+    const current = existsSync(DEPLOYMENTS_MD) ? readFileSync(DEPLOYMENTS_MD, "utf8").replace(/\r\n/g, "\n") : "";
     if (current !== rendered) throw new Error("Deployments.md is out of date: run node scripts/render-deployments.ts");
     console.log("Deployments.md is up to date");
   } else {

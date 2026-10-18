@@ -2,9 +2,9 @@ import type { Amount, Box, BoxCandidate, EIP12UnsignedTransaction } from "@fleet
 import { FEE_CONTRACT } from "@fleet-sdk/core";
 import { MockChain } from "@fleet-sdk/mock-chain";
 import { SLong, estimateBoxSize } from "@fleet-sdk/serializer";
-import { ONE, snapshot } from "./math.ts";
-import { oraclePrice, readReactor } from "./reactor.ts";
-import { type TxContext, adjustPegTx, betaDecayMinusTx, betaDecayPlusTx, fissionTx, fusionTx } from "./transactions.ts";
+import { ONE, snapshot } from "../sdk/src/math.ts";
+import { oraclePrice, readReactor } from "../sdk/src/reactor.ts";
+import { type TxContext, adjustPegTx, betaDecayMinusTx, betaDecayPlusTx, fissionTx, fusionTx } from "../sdk/src/transactions.ts";
 
 /**
  * Problems a node would reject but MockChain does not check: ERG must be preserved, a miner fee paid, every

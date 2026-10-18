@@ -11,8 +11,8 @@ import {
   snapshot,
   valueOfNeutrons,
   valueOfProtons,
-} from "../lib/math.ts";
-import { type TxContext, betaDecayMinusTx, betaDecayPlusTx } from "../lib/transactions.ts";
+} from "../sdk/src/math.ts";
+import { type TxContext, betaDecayMinusTx, betaDecayPlusTx } from "../sdk/src/transactions.ts";
 import {
   HEIGHT,
   MAX_DEV_FEE,

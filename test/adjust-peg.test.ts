@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { ONE, isHealthy, pegAdjustments, snapshot } from "../lib/math.ts";
-import { readReactor } from "../lib/reactor.ts";
-import { adjustPegTx, reactorTx } from "../lib/transactions.ts";
+import { ONE, isHealthy, pegAdjustments, snapshot } from "../sdk/src/math.ts";
+import { readReactor } from "../sdk/src/reactor.ts";
+import { adjustPegTx, reactorTx } from "../sdk/src/transactions.ts";
 import {
   MIN_FEE,
   PROFILES,
