@@ -30,7 +30,31 @@ export function reactorAssets(s: ReactorState, tokens: ReactorTokens) {
   ];
 }
 
-export function readReactor(box: Box<Amount>): { state: ReactorState; tokens: ReactorTokens } {
+import type { GluonDeployment } from "./types.ts";
+import { oraclePrice } from "./oracle.ts";
+
+export { oraclePrice } from "./oracle.ts";
+
+export function readReactor(
+  box: Box<Amount>,
+  deployment?: GluonDeployment,
+): { state: ReactorState; tokens: ReactorTokens } {
+  if (deployment) {
+    if (box.ergoTree !== deployment.ergoTree) {
+      throw new Error(`box has wrong ErgoTree: expected ${deployment.ergoTree}, got ${box.ergoTree}`);
+    }
+    const [nft, neutron, proton] = box.assets;
+    if (
+      !nft ||
+      !neutron ||
+      !proton ||
+      nft.tokenId !== deployment.tokens.nft.id ||
+      neutron.tokenId !== deployment.tokens.neutron.id ||
+      proton.tokenId !== deployment.tokens.proton.id
+    ) {
+      throw new Error("box has wrong token ids");
+    }
+  }
   const r = box.additionalRegisters;
   if (!r.R4 || !r.R5 || !r.R6 || !r.R7 || !r.R8 || !r.R9) throw new Error(`box ${box.boxId} is not a reactor box`);
   const [nft, neutron, proton] = box.assets;
@@ -57,13 +81,6 @@ export function readReactor(box: Box<Amount>): { state: ReactorState; tokens: Re
     },
     tokens: { nft: nft.tokenId, neutron: neutron.tokenId, proton: proton.tokenId },
   };
-}
-
-/** The price an oracle pool box publishes in R4. */
-export function oraclePrice(box: Box<Amount>): bigint {
-  const r4 = box.additionalRegisters.R4;
-  if (!r4) throw new Error(`oracle box ${box.boxId} has no R4`);
-  return parse<bigint>(r4);
 }
 
 /** ErgoTree of the P2PK address of a public key: the tree whose propositionBytes equal the key's propBytes. */

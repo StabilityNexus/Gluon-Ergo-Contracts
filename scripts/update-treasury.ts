@@ -5,12 +5,14 @@
 import { parseArgs } from "node:util";
 import { AddressType, ErgoAddress, Network, RECOMMENDED_MIN_FEE_VALUE, SAFE_MIN_BOX_VALUE } from "@fleet-sdk/core";
 import { publicKeyOf } from "../lib/bootstrap.ts";
-import { addressOf, checkOrSubmit, loadEnvironment, nodeFor, run, selectFunds, uniqueBox } from "../lib/cli.ts";
+import { addressOf, checkOrSubmit, loadEnvironment, nodeFor, run } from "../lib/cli.ts";
 import { addressProblem, readDeployment } from "../lib/config.ts";
-import { readReactor } from "../lib/reactor.ts";
+import { findUniqueBox } from "../sdk/src/node.ts";
+import { readReactor } from "../sdk/src/reactor.ts";
+import { selectInputs } from "../sdk/src/select.ts";
 import { findDeployment } from "../lib/records.ts";
 import { keyFromEnvironment, signTransaction } from "../lib/signer.ts";
-import { updateTreasuryTx } from "../lib/transactions.ts";
+import { updateTreasuryTx } from "../sdk/src/transactions.ts";
 
 run(async () => {
   const { values, positionals } = parseArgs({
@@ -29,14 +31,18 @@ run(async () => {
   const signer = addressOf(key);
   const { node } = nodeFor(config);
   const height = await node.height();
-  const reactor = await uniqueBox(node, record.tokens.nft.id, "reactor", record.ergoTree);
+  const reactor = await findUniqueBox(node, record.tokens.nft.id, "reactor", record.ergoTree);
   // Update Treasury does not use the oracle, but the contract reads data input 0 in every transaction.
-  const oracle = await uniqueBox(node, record.constants._OraclePoolNFT, "oracle pool");
+  const oracle = await findUniqueBox(node, record.constants._OraclePoolNFT, "oracle pool");
   const { state } = readReactor(reactor);
   const current = ErgoAddress.fromPublicKey(state.treasury, Network.Mainnet).encode();
   if (signer !== current) throw new Error(`the wallet in .env (${signer}) is not the current treasury (${current})`);
 
-  const inputs = selectFunds(await node.unspentByAddress(signer), RECOMMENDED_MIN_FEE_VALUE + SAFE_MIN_BOX_VALUE);
+  const inputs = selectInputs(
+    await node.unspentByAddress(signer),
+    { nanoErgs: RECOMMENDED_MIN_FEE_VALUE + SAFE_MIN_BOX_VALUE },
+    { firstAddress: current },
+  );
   const tx = updateTreasuryTx(
     { height, minFee: BigInt(record.constants._MinFee), reactor, oracle, inputs, recipient: signer },
     publicKeyOf(newTreasury),

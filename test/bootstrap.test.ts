@@ -5,11 +5,11 @@ import { describe, expect, it } from "vitest";
 import { bootstrapTransactions, deploymentRecord, planBootstrap, publicKeyOf } from "../lib/bootstrap.ts";
 import { CONTRACT_SOURCE, compilerVersion } from "../lib/compile.ts";
 import { type DeploymentConfig, bootstrapParameters, contractConstants, readDeployment } from "../lib/config.ts";
-import { ONE, adjustedPrice, isHealthy, snapshot } from "../lib/math.ts";
-import { oraclePrice, readReactor } from "../lib/reactor.ts";
+import { ONE, adjustedPrice, isHealthy, snapshot } from "../sdk/src/math.ts";
+import { oraclePrice, readReactor } from "../sdk/src/reactor.ts";
 import { renderDeployments, reproduce } from "../lib/records.ts";
 import { simulateReactor } from "../lib/simulate.ts";
-import { adjustPegTx, betaDecayMinusTx, betaDecayPlusTx, fissionTx, fusionTx } from "../lib/transactions.ts";
+import { adjustPegTx, betaDecayMinusTx, betaDecayPlusTx, fissionTx, fusionTx } from "../sdk/src/transactions.ts";
 import {
   BUYBACK_TREE,
   DOLLAR,

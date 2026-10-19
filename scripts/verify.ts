@@ -10,6 +10,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { run } from "../lib/cli.ts";
 import { readDeployment, validateDeployment } from "../lib/config.ts";
 import { DEPLOYMENTS_MD, NETWORKS, readRecords, renderDeployments, reproduce } from "../lib/records.ts";
+import { SDK_DATA_TS, renderSdkData } from "./build-sdk-data.ts";
 
 const ROOT = new URL("..", import.meta.url);
 
@@ -54,8 +55,11 @@ run(async () => {
     }
   }
 
-  const current = existsSync(DEPLOYMENTS_MD) ? readFileSync(DEPLOYMENTS_MD, "utf8") : "";
+  const current = existsSync(DEPLOYMENTS_MD) ? readFileSync(DEPLOYMENTS_MD, "utf8").replace(/\r\n/g, "\n") : "";
   if (current !== renderDeployments()) problems.push("Deployments.md is out of date: run node scripts/render-deployments.ts");
+
+  const currentSdkData = existsSync(SDK_DATA_TS) ? readFileSync(SDK_DATA_TS, "utf8").replace(/\r\n/g, "\n") : "";
+  if (currentSdkData !== renderSdkData()) problems.push("sdk/src/deployments/data.ts is out of date: run node scripts/build-sdk-data.ts");
 
   if (problems.length > 0) throw new Error(`\n- ${problems.join("\n- ")}`);
   console.log("all checks passed");

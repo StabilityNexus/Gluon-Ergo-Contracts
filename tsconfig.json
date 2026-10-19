@@ -12,5 +12,5 @@
     "erasableSyntaxOnly": true,
     "skipLibCheck": true
   },
-  "include": ["lib", "scripts", "test"]
+  "include": ["lib", "scripts", "test", "sdk/src"]
 }

@@ -1,6 +1,6 @@
 import { describe, it } from "vitest";
-import { ONE } from "../lib/math.ts";
-import { fissionTx } from "../lib/transactions.ts";
+import { ONE } from "../sdk/src/math.ts";
+import { fissionTx } from "../sdk/src/transactions.ts";
 import {
   MAX_DEV_FEE,
   PROFILES,

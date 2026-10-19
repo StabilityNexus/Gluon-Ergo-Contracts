@@ -8,7 +8,9 @@
   "scripts": {
     "test": "vitest run --testTimeout=30000",
     "typecheck": "tsc --noEmit",
-    "verify": "node scripts/verify.ts"
+    "verify": "node scripts/verify.ts",
+    "build:sdk": "npm run build -w @stabilitynexus/gluon-ergo-sdk",
+    "check:sdk": "node scripts/check-sdk.ts"
   },
   "dependencies": {
     "@fleet-sdk/common": "0.10.0",
@@ -21,9 +23,13 @@
     "sigmastate-js": "0.4.6"
   },
   "devDependencies": {
+    "@types/json-bigint": "1.0.4",
     "@types/node": "24.19.0",
     "sigmastate-js-next": "npm:sigmastate-js@0.6.3",
     "typescript": "7.0.2",
     "vitest": "5.0.2"
-  }
+  },
+  "workspaces": [
+    "sdk"
+  ]
 }
