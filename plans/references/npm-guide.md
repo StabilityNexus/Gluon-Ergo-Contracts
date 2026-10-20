@@ -5,9 +5,9 @@ the package that `plans/UI-SDK-v3-migration.md` builds in the contracts reposito
 
 ## 0. What you end up with
 
-- An npm organization, `stabilitynexus`, which owns the scope `@stabilitynexus`. Only its members can publish under that
+- An npm organization, `stability-nexus`, which owns the scope `@stability-nexus`. Only its members can publish under that
   scope, so nobody else can take a name in it, and the owner is visible on every package page.
-- A public package, `@stabilitynexus/gluon-ergo-sdk`, licensed GPL-3.0-only. Its first version is published by hand,
+- A public package, `@stability-nexus/gluon-ergo-sdk`, licensed GPL-3.0-only. Its first version is published by hand,
   once. Every later version is published by one GitHub Actions workflow through npm **trusted publishing**: no npm token
   exists anywhere, and each version carries a provenance attestation that links it to the commit and the workflow run
   that built it.
@@ -21,8 +21,8 @@ same thing everywhere in the plans.
 
 | | |
 |---|---|
-| npm organization and scope | `stabilitynexus`, `@stabilitynexus` |
-| Package | `@stabilitynexus/gluon-ergo-sdk` |
+| npm organization and scope | `stability-nexus`, `@stability-nexus` |
+| Package | `@stability-nexus/gluon-ergo-sdk` |
 | Repository that publishes | `DjedAlliance/Gluon-Ergo-Backend-Contracts` |
 | Folder of the package in it | `sdk/`, an npm workspace |
 | Workflow file | `.github/workflows/release.yml` |
@@ -30,7 +30,7 @@ same thing everywhere in the plans.
 | Release tags | `sdk-v<version>`, e.g. `sdk-v2.0.0-next.1` |
 | First version, published by hand | `2.0.0-next.0` |
 
-If the name `stabilitynexus` is already taken on npm, choose another organization name and replace `@stabilitynexus` in
+If the name `stability-nexus` is already taken on npm, choose another organization name and replace `@stability-nexus` in
 this guide and in the migration plan.
 
 ## 2. Before you start
@@ -44,7 +44,7 @@ this guide and in the migration plan.
   11.15.0 or newer.
 - **A public publishing repository.** npm generates provenance only for public repositories.
 - **The package's `package.json`, ready** (`sdk/package.json`, created in step A1 of the migration plan), with:
-  - `"name": "@stabilitynexus/gluon-ergo-sdk"`;
+  - `"name": "@stability-nexus/gluon-ergo-sdk"`;
   - `"publishConfig": { "access": "public", "tag": "next" }`: a scoped package is private unless published with public
     access, and pre-releases must not take the `latest` tag;
   - `"repository": { "type": "git", "url": "git+https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git",
@@ -54,8 +54,8 @@ this guide and in the migration plan.
 
 1. Sign in on https://www.npmjs.com with one of the maintainers' accounts.
 2. Profile picture (top right) → **Add Organization**.
-3. **Name:** `stabilitynexus`. The organization's name is also its scope: its packages are named
-   `@stabilitynexus/<name>`.
+3. **Name:** `stability-nexus`. The organization's name is also its scope: its packages are named
+   `@stability-nexus/<name>`.
 4. Plan: **Unlimited public packages**, which is free → **Create**.
 5. Invite the other maintainers by npm username or email address → **Invite** → **Continue**.
 6. In the organization's members list, give at least two people the **owner** role.
@@ -81,11 +81,11 @@ npm publish                        # public, under the next tag (publishConfig);
 ```
 
 Then check:
-- `npm view @stabilitynexus/gluon-ergo-sdk versions` lists `2.0.0-next.0`;
-- `npm dist-tag ls @stabilitynexus/gluon-ergo-sdk` shows `next: 2.0.0-next.0`. npm's documentation does not say
+- `npm view @stability-nexus/gluon-ergo-sdk versions` lists `2.0.0-next.0`;
+- `npm dist-tag ls @stability-nexus/gluon-ergo-sdk` shows `next: 2.0.0-next.0`. npm's documentation does not say
   whether the first publication of a package under another tag also creates `latest`; either way it is harmless until
   2.0.0;
-- https://www.npmjs.com/package/@stabilitynexus/gluon-ergo-sdk shows the package as public.
+- https://www.npmjs.com/package/@stability-nexus/gluon-ergo-sdk shows the package as public.
 
 This one version has no provenance, which only CI can produce. Every later version has it.
 
@@ -108,9 +108,9 @@ to be used for a successful publication within 2 days of its creation.
 **Or from the command line** (npm 11.15.0 or newer; 2FA):
 
 ```sh
-npm trust github @stabilitynexus/gluon-ergo-sdk \
+npm trust github @stability-nexus/gluon-ergo-sdk \
   --repo DjedAlliance/Gluon-Ergo-Backend-Contracts --file release.yml --env npm --allow-publish
-npm trust list @stabilitynexus/gluon-ergo-sdk
+npm trust list @stability-nexus/gluon-ergo-sdk
 ```
 
 `npm trust` does not know about workspaces, which is why the package is named explicitly.
@@ -173,7 +173,7 @@ npm trust list @stabilitynexus/gluon-ergo-sdk
          - run: npm run verify
          - run: npm run build:sdk
          - run: npm run check:sdk
-         - run: npm publish -w @stabilitynexus/gluon-ergo-sdk
+         - run: npm publish -w @stability-nexus/gluon-ergo-sdk
    ```
 
    What makes trusted publishing work in it:
@@ -197,13 +197,13 @@ For each version:
    ```
 3. The workflow runs, after the environment's approval if you set one up. It checks that the tag matches the version,
    runs the checks, builds, and publishes.
-4. Check: `npm view @stabilitynexus/gluon-ergo-sdk@next version` prints the new version; the package page shows its
+4. Check: `npm view @stability-nexus/gluon-ergo-sdk@next version` prints the new version; the package page shows its
    provenance, with a link to the workflow run; and, in a project that installs the package, `npm audit signatures`
    verifies the registry's signatures and the attestation.
 
 **2.0.0 and `latest`.** In the commit that releases 2.0.0 (the plans say when), remove `"tag": "next"` from
 `publishConfig`, so that 2.0.0 becomes `latest`. Put it back for the next pre-releases. An owner can also move a tag by
-hand, with 2FA: `npm dist-tag add @stabilitynexus/gluon-ergo-sdk@<version> latest`.
+hand, with 2FA: `npm dist-tag add @stability-nexus/gluon-ergo-sdk@<version> latest`.
 
 ## 9. Optional: approve each release on npm (staged publishing)
 
@@ -213,7 +213,7 @@ this, neither a compromised workflow nor a stolen GitHub account can publish a v
 - In the workflow, replace the last step with `npm stage publish`, run in the package's folder (`working-directory:
   sdk`).
 - To approve: the package on npmjs.com → **Staged Packages** → review → **Approve** (2FA). Or from the command line:
-  `npm stage list @stabilitynexus/gluon-ergo-sdk`, `npm stage view <stage-id>`, `npm stage approve <stage-id>`.
+  `npm stage list @stability-nexus/gluon-ergo-sdk`, `npm stage view <stage-id>`, `npm stage approve <stage-id>`.
 - It needs npm 11.15.0 or newer, in CI and on the approver's machine, and Node 22.14.0 or newer.
 - npm's documentation does not yet say how a staged version is tagged, or whether it keeps its provenance. On the first
   staged release, check `npm stage view <stage-id>` before approving, and `npm dist-tag ls` and the package page after.
@@ -226,7 +226,7 @@ this, neither a compromised workflow nor a stolen GitHub account can publish a v
   replace the trusted publisher: `npm trust list`, `npm trust revoke --id <id>`, then `npm trust github …` again. The
   same applies if the workflow file is renamed.
 - **A bad version:** publish a fixed version, then deprecate the bad one:
-  `npm deprecate @stabilitynexus/gluon-ergo-sdk@<version> "<reason>; use <fixed version>"`. npm lets you unpublish a
+  `npm deprecate @stability-nexus/gluon-ergo-sdk@<version> "<reason>; use <fixed version>"`. npm lets you unpublish a
   version within 72 hours if no other public package depends on it, and later only in narrow cases; a version number
   can never be reused.
 - **Lost 2FA devices:** use the recovery codes. This is also why there are two owners.

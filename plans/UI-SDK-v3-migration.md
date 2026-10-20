@@ -13,7 +13,7 @@ history (commit `7f60beb`). The npm setup it relies on is in `references/npm-gui
 **Scope.** This plan does two things:
 1. **Part A, in the contracts repository:** it turns the TypeScript there, which already implements every v3 rule and
    is tested against the contract, into the **SDK 2.0.0**, published from that repository as a new npm package that the
-   maintainers own, **`@stabilitynexus/gluon-ergo-sdk`**.
+   maintainers own, **`@stability-nexus/gluon-ergo-sdk`**.
 2. **Part B, in the UI repository:** it builds a new version of the UI on that package, as a **static, client-side site
    hosted on GitHub Pages**. Gluon Gold v3 and Gluon Dollar v3 each get their own deployment, in their own fork of the
    repository, and the two forks differ only in their env/config files.
@@ -22,7 +22,7 @@ history (commit `7f60beb`). The npm setup it relies on is in `references/npm-gui
   in its behavior. It is licensed GPL-3.0 (`"license": "GPL-3.0-only"`).
 - **The SDK repository and the old package are not changed.** `StabilityNexus/Gluon-Ergo-SDK` and `gluon-ergo-sdk`
   1.0.0 to 1.0.3 stay as they are, and nothing in 1.x is fixed, changed or deprecated. The SDK 2.x is a new package,
-  `@stabilitynexus/gluon-ergo-sdk`, in the npm organization `stabilitynexus`; its versions start at 2.0.0, continuing
+  `@stability-nexus/gluon-ergo-sdk`, in the npm organization `stability-nexus`; its versions start at 2.0.0, continuing
   the 1.x line under the new name.
 - **The new UI knows v3 deployments and SDK 2.x only**: no v2 code path, no use of SDK 1.x, no testnet support.
 - **The legacy UI is the `mainnet` branch** of the UI repository. It keeps being deployed to Vercel by its existing
@@ -61,7 +61,7 @@ The contracts repository already holds TypeScript for every v3 rule: the contrac
 register layout (`lib/reactor.ts`), builders for all six transactions (`lib/transactions.ts`) and a node client that
 copes with a stale blockchain index and with mempool races (`lib/node.ts`). Its 375 tests execute those builders against
 the real contract on a simulated chain. This plan:
-- makes that code the source of the SDK 2.0.0, **`@stabilitynexus/gluon-ergo-sdk`**, by moving it into a package
+- makes that code the source of the SDK 2.0.0, **`@stability-nexus/gluon-ergo-sdk`**, by moving it into a package
   folder, `sdk/`, rather than copying it, and adds what a front end needs: bundled deployment records, node access that
   works in browsers, input selection, error codes and a client;
 - keeps the contract, its tests, the deployment records and the SDK in one repository, so that a change to any of them
@@ -82,8 +82,8 @@ the real contract on a simulated chain. This plan:
 - **CD2. One package, in a workspace.** `sdk/` is an npm workspace of the repository, with its own `package.json`,
   build, `README.md`, `CHANGELOG.md` and `LICENSE`. The rest of the repository (the contract, the tooling, the tests and
   the records) stays an unpublished project.
-- **CD3. A new package, owned by the maintainers.** The SDK is `@stabilitynexus/gluon-ergo-sdk`, in the npm
-  organization `stabilitynexus`: v3 only, mainnet only, with no 1.x API. Its versions start at 2.0.0 and follow
+- **CD3. A new package, owned by the maintainers.** The SDK is `@stability-nexus/gluon-ergo-sdk`, in the npm
+  organization `stability-nexus`: v3 only, mainnet only, with no 1.x API. Its versions start at 2.0.0 and follow
   `gluon-ergo-sdk` 1.x, which stays on npm and in its own repository, untouched. `references/npm-guide.md` sets up the
   organization, the package and its trusted publisher.
 - **CD4. GPL-3.0 for the package only.** `sdk/LICENSE` holds the GPL-3.0 text and `sdk/package.json` declares
@@ -218,7 +218,7 @@ lib/                      deployment tooling, never published: bootstrap, cli, c
 scripts/                  bootstrap, adjust-peg, update-treasury, compile, verify, render-deployments, and new:
                           check-sdk (A1), build-sdk-data (A2), smoke (A5)
 test/                     contract tests and SDK tests; they import ../sdk/src/*.ts
-sdk/                      the package @stabilitynexus/gluon-ergo-sdk, an npm workspace
+sdk/                      the package @stability-nexus/gluon-ergo-sdk, an npm workspace
   package.json  README.md  CHANGELOG.md  LICENSE  tsconfig.build.json
   src/
     index.ts              public exports (§5.4)
@@ -252,7 +252,7 @@ sdk/                      the package @stabilitynexus/gluon-ergo-sdk, an npm wor
 
 ```json
 {
-  "name": "@stabilitynexus/gluon-ergo-sdk",
+  "name": "@stability-nexus/gluon-ergo-sdk",
   "version": "2.0.0-next.0",
   "description": "Read, quote and build transactions for Gluon v3 reactors on Ergo",
   "license": "GPL-3.0-only",
@@ -316,17 +316,17 @@ TypeScript 5.9.3 and 7.0.2 resolve them for a consumer, with `moduleResolution` 
 `skipLibCheck` off (also tried on 2026-10-12).
 
 **Root `package.json`:** `"workspaces": ["sdk"]`, and two scripts:
-`"build:sdk": "npm run build -w @stabilitynexus/gluon-ergo-sdk"` and `"check:sdk": "node scripts/check-sdk.ts"`.
+`"build:sdk": "npm run build -w @stability-nexus/gluon-ergo-sdk"` and `"check:sdk": "node scripts/check-sdk.ts"`.
 
 **`scripts/check-sdk.ts`** runs after the build, in CI and in the release workflow. It fails unless:
 1. `sdk/dist/index.js` and `sdk/dist/index.d.ts` exist;
 2. no file in `sdk/dist` imports a `node:` module or names `Buffer` or `process`;
 3. every package that a file in `sdk/dist` imports, in `.js` and `.d.ts` files, is in the `dependencies` of
    `sdk/package.json`, at the same exact version as in the root `package.json` when the root has it too;
-4. `npm pack --dry-run --json -w @stabilitynexus/gluon-ergo-sdk` lists only `package.json`, `README.md`, `LICENSE`,
+4. `npm pack --dry-run --json -w @stability-nexus/gluon-ergo-sdk` lists only `package.json`, `README.md`, `LICENSE`,
    `CHANGELOG.md` and files under `dist/`;
 5. the packed tarball, installed with its dependencies into an empty temporary folder, can be imported by Node
-   (`import("@stabilitynexus/gluon-ergo-sdk")`), and a small TypeScript file that uses the package's types compiles
+   (`import("@stability-nexus/gluon-ergo-sdk")`), and a small TypeScript file that uses the package's types compiles
    against it.
 
 Check 5 needs the npm registry; the others work offline.
@@ -572,7 +572,7 @@ script does, unless the step says so. Before any real deployment, the bootstrap'
    `.gitignore`, add `sdk/dist/`.
 5. **`scripts/check-sdk.ts`**, with the checks of §5.2.
 6. **CI.** In `.github/workflows/ci.yml`, after `npm run verify`, add `npm run build:sdk` and `npm run check:sdk`.
-7. **README.** In "Repository Structure", add `sdk/` ("the SDK, published to npm as @stabilitynexus/gluon-ergo-sdk"),
+7. **README.** In "Repository Structure", add `sdk/` ("the SDK, published to npm as @stability-nexus/gluon-ergo-sdk"),
    and describe `lib/` as deployment tooling.
 
 **Done when** the five checks pass, the 375 tests pass with no change other than their import paths, `sdk/dist` holds
@@ -702,7 +702,7 @@ the four modules and `index`, and `git log --follow sdk/src/math.ts` shows the f
 6. Set `sdk/package.json` to `2.0.0-next.1`, commit, tag `sdk-v2.0.0-next.1`, and push the commit and the tag. The
    workflow publishes.
 
-**Done when** `npm view @stabilitynexus/gluon-ergo-sdk@next version` prints `2.0.0-next.1`, and the package's npm page
+**Done when** `npm view @stability-nexus/gluon-ergo-sdk@next version` prints `2.0.0-next.1`, and the package's npm page
 shows that version's provenance from this repository.
 
 ### A7: After each v3 deployment
@@ -769,7 +769,7 @@ jobs:
       - run: npm run verify
       - run: npm run build:sdk
       - run: npm run check:sdk
-      - run: npm publish -w @stabilitynexus/gluon-ergo-sdk
+      - run: npm publish -w @stability-nexus/gluon-ergo-sdk
 ```
 
 Notes:
@@ -781,7 +781,7 @@ Notes:
 - The actions are pinned to the same commits as the repository's `ci.yml`.
 
 **One-time setup, in A6:** follow `references/npm-guide.md`. In short:
-1. Create the npm organization `stabilitynexus`, with at least two owners who use 2FA (guide §2, §3).
+1. Create the npm organization `stability-nexus`, with at least two owners who use 2FA (guide §2, §3).
 2. Publish the first version, `2.0.0-next.0`, by hand from a clean checkout (guide §4): npm can add a trusted
    publisher only to a package that exists.
 3. Add the trusted publisher: organization `DjedAlliance`, repository `Gluon-Ergo-Backend-Contracts`, workflow
@@ -893,7 +893,7 @@ it; none of it is a fix list for the legacy UI.
 
 | Area | Current code (`main`) | New version |
 |---|---|---|
-| SDK | `gluon-ergo-sdk` 1.x; `new sdk.Gluon()` in 7 places, each with the SDK's built-in reactor | `@stabilitynexus/gluon-ergo-sdk` 2.0.0; one `GluonClient` in `GluonProvider` |
+| SDK | `gluon-ergo-sdk` 1.x; `new sdk.Gluon()` in 7 places, each with the SDK's built-in reactor | `@stability-nexus/gluon-ergo-sdk` 2.0.0; one `GluonClient` in `GluonProvider` |
 | Reactor and token ids | hard-coded in `lib/constants/token.ts` and 6 other files | `deployment.tokens` |
 | Units and labels | oracle price ÷ 1000, a `0.66` cushion, "GAU"/"GAUC" literals | `ProtocolSnapshot` fields; tickers from the token names |
 | Amounts | JavaScript numbers (`Number(...)`) | `bigint`, with `amounts.ts` |
@@ -1084,7 +1084,7 @@ Each step is one pull request into `main` of the upstream repository. Run `bun r
 
 ### B1: Foundation
 
-1. **Dependencies.** Add `@stabilitynexus/gluon-ergo-sdk` at an exact `2.0.0-next.N` (until A6 publishes a
+1. **Dependencies.** Add `@stability-nexus/gluon-ergo-sdk` at an exact `2.0.0-next.N` (until A6 publishes a
    pre-release, a local build: §16). Remove `gluon-ergo-sdk` 1.x, `ergo-lib-wasm-browser`, `ergo-lib-wasm-nodejs` and
    `@fleet-sdk/core` (nothing in `src` uses it directly). Add `.nvmrc` with `24` and `"engines": { "node": ">=24" }`.
    Regenerate `bun.lock`.
@@ -1221,7 +1221,7 @@ Also in this PR:
 Done by the maintainers once SDK 2.0.0 is released with both records (or with the record of the deployment being
 published first):
 
-1. In upstream, bump `@stabilitynexus/gluon-ergo-sdk` to `2.0.0` (exact) and merge.
+1. In upstream, bump `@stability-nexus/gluon-ergo-sdk` to `2.0.0` (exact) and merge.
 2. Create the forks and publish the sites: §15.3 and §15.5, once per fork.
 3. Verify each site: §15.7.
 
@@ -1262,13 +1262,13 @@ GitHub Pages site. The workflow does nothing in upstream.
 
 ### 15.2 Before you start
 
-1. **Rights.** You can create repositories in the `StabilityNexus` organization and change their settings.
-2. **The code.** Upstream `main` has B1 to B6 merged and depends on `@stabilitynexus/gluon-ergo-sdk` 2.0.0, which
+1. **Rights.** You can create repositories in the `stability-nexus` organization and change their settings.
+2. **The code.** Upstream `main` has B1 to B6 merged and depends on `@stability-nexus/gluon-ergo-sdk` 2.0.0, which
    bundles the deployment you are publishing. This prints its address, from a checkout of upstream with `bun install`
    done:
 
    ```sh
-   node -e "import('@stabilitynexus/gluon-ergo-sdk').then(s => console.log(s.getDeployment('gluon-gold-v3').address))"
+   node -e "import('@stability-nexus/gluon-ergo-sdk').then(s => console.log(s.getDeployment('gluon-gold-v3').address))"
    ```
 3. **A node** for `NEXT_PUBLIC_NODE_URL` that passes the checks of §15.6.
 4. **DNS access** for `stability.nexus`, to add one `CNAME` record per site (§15.3, step 7) and, recommended, the `TXT`
@@ -1279,7 +1279,7 @@ GitHub Pages site. The workflow does nothing in upstream.
 
 Repeat for each deployment (Gold, Dollar).
 
-1. **Fork.** On `StabilityNexus/Gluon-Ergo-UI`: **Fork → Create a new fork**. Owner `StabilityNexus`; repository name
+1. **Fork.** On `StabilityNexus/Gluon-Ergo-UI`: **Fork → Create a new fork**. Owner `stability-nexus`; repository name
    `Gluon-Ergo-UI-Gold` (Gold) or `Gluon-Ergo-UI-Dollar` (Dollar); tick **Copy the `main` branch only**, so that the
    legacy `mainnet` branch is not copied.
    (GitHub allows a fork in the same organization as its parent, under a different name. `gh repo fork` does the same;
@@ -1544,36 +1544,36 @@ The Vercel project(s) that serve the current UI keep deploying `mainnet` and are
 
 ```sh
 # in the contracts repository
-npm run build:sdk && npm pack -w @stabilitynexus/gluon-ergo-sdk --pack-destination /tmp/gluon-sdk
+npm run build:sdk && npm pack -w @stability-nexus/gluon-ergo-sdk --pack-destination /tmp/gluon-sdk
 # in the UI repository
 bun add /tmp/gluon-sdk/stabilitynexus-gluon-ergo-sdk-<version>.tgz
 ```
 
 Bun installs a local tarball (tried with Bun 1.2.17 on 2026-10-12), but CI cannot reach it: before a pull request is
-merged, replace it with a published version, `bun add --exact @stabilitynexus/gluon-ergo-sdk@<version>`.
+merged, replace it with a published version, `bun add --exact @stability-nexus/gluon-ergo-sdk@<version>`.
 
 **How a change reaches the sites:**
 
 | Event | Contracts repository | UI repository and forks |
 |---|---|---|
-| A new deployment is recorded | `bootstrap.ts --submit` regenerates the data; commit and tag the deployment; bump the SDK's version, tag `sdk-v<version>`; CI publishes (A7) | bump `@stabilitynexus/gluon-ergo-sdk` to the exact new version in upstream, then merge into both forks (§15.8) |
+| A new deployment is recorded | `bootstrap.ts --submit` regenerates the data; commit and tag the deployment; bump the SDK's version, tag `sdk-v<version>`; CI publishes (A7) | bump `@stability-nexus/gluon-ergo-sdk` to the exact new version in upstream, then merge into both forks (§15.8) |
 | A bug in the SDK | fix it, with a test; bump, tag; CI publishes | bump, then merge into both forks |
 | A UI change | nothing | the change in upstream, then merge into both forks |
 
 **Who owns what.** The maintainers of the contracts repository own the SDK and its releases, and, as owners of the npm
-organization `stabilitynexus`, its package. The UI's maintainers own the UI and the two forks.
+organization `stability-nexus`, its package. The UI's maintainers own the UI and the two forks.
 
 ## 17. Definition of done
 
 **Contracts repository.**
 - A1 to A6 are merged into `main`, and CI is green: type check, tests, `verify`, the SDK's build and `check:sdk`.
-- `@stabilitynexus/gluon-ergo-sdk` 2.0.0 is published by the release workflow, with provenance, and bundles at least
+- `@stability-nexus/gluon-ergo-sdk` 2.0.0 is published by the release workflow, with provenance, and bundles at least
   the first mainnet v3 deployment; the package's publishing access disallows tokens (`references/npm-guide.md` §6).
 - The scripts use the SDK: `lib/cli.ts` has no `uniqueBox`, `requireFreshOracle` or `selectFunds`.
 - The SDK repository, `StabilityNexus/Gluon-Ergo-SDK`, and the old package, `gluon-ergo-sdk` 1.x, are unchanged.
 
 **UI repository.**
-- B1 to B6 are merged in upstream, upstream's CI is green, and upstream depends on `@stabilitynexus/gluon-ergo-sdk`
+- B1 to B6 are merged in upstream, upstream's CI is green, and upstream depends on `@stability-nexus/gluon-ergo-sdk`
   2.0.0, exactly.
 - Both forks exist, each with its `.env.production`, and each site passes §15.7 at its own address (§10).
 - `mainnet` is unchanged since Step 0, and the existing Vercel project still deploys it.
@@ -1598,7 +1598,7 @@ organization `stabilitynexus`, its package. The UI's maintainers own the UI and 
    `deployments/` and `.github/` there the same way.
 
 **Decided by the maintainers (2026-10-13).**
-1. The SDK is a new npm package that the maintainers own, `@stabilitynexus/gluon-ergo-sdk`, set up as
+1. The SDK is a new npm package that the maintainers own, `@stability-nexus/gluon-ergo-sdk`, set up as
    `references/npm-guide.md` describes; the old `gluon-ergo-sdk` keeps 1.x.
 2. `sdk/` is licensed GPL-3.0-only, and the rest of the contracts repository keeps having no license file (CD4).
 3. The maintainers control the DNS of `stability.nexus`, for the records of §15.3, step 7.
@@ -1615,10 +1615,10 @@ organization `stabilitynexus`, its package. The UI's maintainers own the UI and 
    the maintainers' call.
 
 **Good to know.**
-- If the name `stabilitynexus` is already taken on npm, the organization needs another name, and `@stabilitynexus`
+- If the name `stability-nexus` is already taken on npm, the organization needs another name, and `@stability-nexus`
   changes everywhere (`references/npm-guide.md` §1).
 - The contracts repository is `DjedAlliance/Gluon-Ergo-Backend-Contracts`, while the UI and its forks are in
-  `StabilityNexus`. The package's `repository` field and its trusted publisher name the contracts repository; if it
+  `stability-nexus`. The package's `repository` field and its trusted publisher name the contracts repository; if it
   moves, update both (`references/npm-guide.md` §10).
 
 ## Appendix A: Formulas
@@ -1726,7 +1726,7 @@ reactor input.
 
 | Path | Action | Step |
 |---|---|---|
-| `package.json`, `bun.lock` | `@stabilitynexus/gluon-ergo-sdk` (a pre-release, then 2.0.0); remove `gluon-ergo-sdk` 1.x, ergo-lib-wasm, `@fleet-sdk/core`; `engines`; scripts | B1 |
+| `package.json`, `bun.lock` | `@stability-nexus/gluon-ergo-sdk` (a pre-release, then 2.0.0); remove `gluon-ergo-sdk` 1.x, ergo-lib-wasm, `@fleet-sdk/core`; `engines`; scripts | B1 |
 | `.nvmrc` | new (`24`) | B1 |
 | `next.config.ts` | static export (§12.1) | B1 |
 | `vercel.json`, `.github/workflows/nextjs.yml` | delete | B1 |
@@ -1753,7 +1753,7 @@ reactor input.
 ## Appendix D: `.env.example` of the UI
 
 ```sh
-# The deployment this site serves: a v3 deployment bundled in @stabilitynexus/gluon-ergo-sdk.
+# The deployment this site serves: a v3 deployment bundled in @stability-nexus/gluon-ergo-sdk.
 NEXT_PUBLIC_GLUON_DEPLOYMENT=gluon-gold-v3
 
 # HTTPS Ergo node that serves the blockchain index API and allows browser requests.
