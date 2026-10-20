@@ -38,4 +38,4 @@ jobs:
       - run: npm run verify
       - run: npm run build:sdk
       - run: npm run check:sdk
-      - run: npm publish -w @stabilitynexus/gluon-ergo-sdk
+      - run: npm publish -w @stability-nexus/gluon-ergo-sdk

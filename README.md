@@ -277,7 +277,7 @@ that it yields the recorded ErgoTree, address and template hash. It also checks 
 
 ## SDK
 
-[`sdk/`](sdk/) holds the TypeScript SDK, published to npm as [`@stability-nexus/gluon-ergo-sdk`](https://www.npmjs.com/package/@stabilitynexus/gluon-ergo-sdk). It reads reactor boxes, computes quotes and analytics, and builds EIP-12 transactions for Gluon v3 reactors on Ergo mainnet.
+[`sdk/`](sdk/) holds the TypeScript SDK, published to npm as [`@stability-nexus/gluon-ergo-sdk`](https://www.npmjs.com/package/@stability-nexus/gluon-ergo-sdk). It reads reactor boxes, computes quotes and analytics, and builds EIP-12 transactions for Gluon v3 reactors on Ergo mainnet.
 
 - **Build**: `npm run build:sdk` compiles the SDK TypeScript source to `sdk/dist/`.
 - **Packaging check**: `npm run check:sdk` validates package structure, browser safety, and type declarations.

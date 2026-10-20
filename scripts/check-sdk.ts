@@ -22,15 +22,15 @@ for (const file of sourceFiles) {
     if (rootPackage.dependencies[dependency] !== undefined && rootPackage.dependencies[dependency] !== sdkPackage.dependencies[dependency]) fail(`${dependency} version differs from the root package`);
   }
 }
-const packed = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "-w", "@stabilitynexus/gluon-ergo-sdk"], { cwd: root, encoding: "utf8" })) as [{ files: { path: string }[] }];
+const packed = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "-w", "@stability-nexus/gluon-ergo-sdk"], { cwd: root, encoding: "utf8" })) as [{ files: { path: string }[] }];
 for (const file of packed[0].files.map((entry) => entry.path)) if (!["package.json", "README.md", "LICENSE", "CHANGELOG.md"].includes(file) && !file.startsWith("dist/")) fail(`unexpected packed file ${file}`);
 const temp = mkdtempSync(join(tmpdir(), "gluon-sdk-"));
 try {
-  const tarball = JSON.parse(execFileSync("npm", ["pack", "--json", "-w", "@stabilitynexus/gluon-ergo-sdk"], { cwd: root, encoding: "utf8" })) as [{ filename: string }];
+  const tarball = JSON.parse(execFileSync("npm", ["pack", "--json", "-w", "@stability-nexus/gluon-ergo-sdk"], { cwd: root, encoding: "utf8" })) as [{ filename: string }];
   const archive = join(root, tarball[0].filename);
   execFileSync("npm", ["install", "--ignore-scripts", archive], { cwd: temp, stdio: "inherit" });
-  execFileSync("node", ["--input-type=module", "-e", 'import("@stabilitynexus/gluon-ergo-sdk")'], { cwd: temp, stdio: "inherit" });
-  writeFileSync(join(temp, "sdk-types.ts"), `import { math, readReactor } from "@stabilitynexus/gluon-ergo-sdk"; void math; void readReactor;`);
+  execFileSync("node", ["--input-type=module", "-e", 'import("@stability-nexus/gluon-ergo-sdk")'], { cwd: temp, stdio: "inherit" });
+  writeFileSync(join(temp, "sdk-types.ts"), `import { math, readReactor } from "@stability-nexus/gluon-ergo-sdk"; void math; void readReactor;`);
   execFileSync(process.execPath, [join(root, "node_modules", "typescript", "bin", "tsc"), "--noEmit", "--module", "NodeNext", "--moduleResolution", "NodeNext", "--skipLibCheck", "false", "--target", "ES2022", "sdk-types.ts"], { cwd: temp, stdio: "inherit" });
   rmSync(archive, { force: true });
 } finally { rmSync(temp, { recursive: true, force: true }); }

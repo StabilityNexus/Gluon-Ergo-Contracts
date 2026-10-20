@@ -1546,7 +1546,7 @@ The Vercel project(s) that serve the current UI keep deploying `mainnet` and are
 # in the contracts repository
 npm run build:sdk && npm pack -w @stability-nexus/gluon-ergo-sdk --pack-destination /tmp/gluon-sdk
 # in the UI repository
-bun add /tmp/gluon-sdk/stabilitynexus-gluon-ergo-sdk-<version>.tgz
+bun add /tmp/gluon-sdk/stability-nexus-gluon-ergo-sdk-<version>.tgz
 ```
 
 Bun installs a local tarball (tried with Bun 1.2.17 on 2026-10-12), but CI cannot reach it: before a pull request is

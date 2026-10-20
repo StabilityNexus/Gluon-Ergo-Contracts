@@ -2,7 +2,7 @@
 
 ## 2.0.0-next.1 (2026-10-18)
 
-- Initial pre-release of `@stabilitynexus/gluon-ergo-sdk` supporting Gluon v3 reactors on Ergo mainnet.
+- Initial pre-release of `@stability-nexus/gluon-ergo-sdk` supporting Gluon v3 reactors on Ergo mainnet.
 - Integrated `GluonClient` with deployment-aware reactor box parsing, mempool lookups, and fresh oracle verification.
 - Analytics and snapshot engine (`snapshot()`) providing reserve ratios, leverage, crash cushions, and shifted daily volume buckets.
 - High-level quotes and transaction builders for fission, fusion, transmutations (beta decays), Adjust Peg, and Update Treasury.

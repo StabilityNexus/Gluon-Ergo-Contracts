@@ -8,7 +8,7 @@ const sdk = resolve(root, "sdk");
 describe("SDK Package & Documentation (A6)", () => {
   it("sdk/package.json has correct metadata, version 2.0.0-next.1, and exports", () => {
     const pkg = JSON.parse(readFileSync(resolve(sdk, "package.json"), "utf8"));
-    expect(pkg.name).toBe("@stabilitynexus/gluon-ergo-sdk");
+    expect(pkg.name).toBe("@stability-nexus/gluon-ergo-sdk");
     expect(pkg.version).toBe("2.0.0-next.1");
     expect(pkg.license).toBe("GPL-3.0-only");
     expect(pkg.type).toBe("module");
@@ -66,7 +66,7 @@ describe("SDK Package & Documentation (A6)", () => {
   it("root README.md contains the SDK section, CD4 license note, and updated introduction", () => {
     const rootReadme = readFileSync(resolve(root, "README.md"), "utf8");
     expect(rootReadme).toContain("[Gluon Ergo SDK](sdk/)");
-    expect(rootReadme).toContain("@stabilitynexus/gluon-ergo-sdk");
+    expect(rootReadme).toContain("@stability-nexus/gluon-ergo-sdk");
     expect(rootReadme).toContain("## SDK");
     expect(rootReadme).toContain("npm run build:sdk");
     expect(rootReadme).toContain("npm run check:sdk");
@@ -83,6 +83,6 @@ describe("SDK Package & Documentation (A6)", () => {
     expect(yaml).toContain("id-token: write");
     expect(yaml).toContain('test "$GITHUB_REF_NAME" = "sdk-v$(node -p "require(\'./sdk/package.json\').version")"');
     expect(yaml).toContain("npm install --global npm@11.20.0");
-    expect(yaml).toContain("npm publish -w @stabilitynexus/gluon-ergo-sdk");
+    expect(yaml).toContain("npm publish -w @stability-nexus/gluon-ergo-sdk");
   });
 });

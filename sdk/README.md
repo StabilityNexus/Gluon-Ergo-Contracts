@@ -1,4 +1,4 @@
-# @stabilitynexus/gluon-ergo-sdk
+# @stability-nexus/gluon-ergo-sdk
 
 > **Important**: 2.x supports Gluon v3 reactors only. Reactors of earlier contract versions need 1.x (`npm install gluon-ergo-sdk@1`, the legacy package).
 >
@@ -16,7 +16,7 @@ A TypeScript SDK for reading, quoting, and building transactions for [Gluon v3](
 ## Installation
 
 ```bash
-npm install @stabilitynexus/gluon-ergo-sdk@next
+npm install @stability-nexus/gluon-ergo-sdk@next
 ```
 
 Peer dependencies: none. The SDK bundles and exports everything needed to read reactor boxes and build EIP-12 transactions.
@@ -28,7 +28,7 @@ Peer dependencies: none. The SDK bundles and exports everything needed to read r
 Deployments are identified by name:
 
 ```ts
-import { DEPLOYMENTS, getDeployment, type GluonDeployment } from "@stabilitynexus/gluon-ergo-sdk";
+import { DEPLOYMENTS, getDeployment, type GluonDeployment } from "@stability-nexus/gluon-ergo-sdk";
 
 // List all bundled v3 deployments
 console.log(DEPLOYMENTS.map((d) => d.name));
@@ -40,7 +40,7 @@ const goldDeployment = getDeployment("gluon-gold-v3");
 Custom or runtime deployment records can also be parsed and validated:
 
 ```ts
-import { deploymentFromRecord } from "@stabilitynexus/gluon-ergo-sdk";
+import { deploymentFromRecord } from "@stability-nexus/gluon-ergo-sdk";
 
 // Parses and validates a deployment record (throws INVALID_DEPLOYMENT if invalid)
 const deployment = deploymentFromRecord(record);
@@ -53,7 +53,7 @@ const deployment = deploymentFromRecord(record);
 `GluonClient` is the primary entry point:
 
 ```ts
-import { GluonClient } from "@stabilitynexus/gluon-ergo-sdk";
+import { GluonClient } from "@stability-nexus/gluon-ergo-sdk";
 
 const client = new GluonClient({
   deployment: "gluon-gold-v3", // or pass a GluonDeployment object directly
@@ -173,7 +173,7 @@ Every expected error thrown by the SDK is an instance of `GluonError` with a str
 Example error handling:
 
 ```ts
-import { GluonError } from "@stabilitynexus/gluon-ergo-sdk";
+import { GluonError } from "@stability-nexus/gluon-ergo-sdk";
 
 try {
   client.quoteFission(chain, 10_000_000n);
@@ -200,7 +200,7 @@ try {
 For indexers, charts, and analytics without a client instance:
 
 ```ts
-import { readReactor, reactorRegisters, oraclePrice, oracleAge, math } from "@stabilitynexus/gluon-ergo-sdk";
+import { readReactor, reactorRegisters, oraclePrice, oracleAge, math } from "@stability-nexus/gluon-ergo-sdk";
 
 // Parse any reactor box directly
 const { state, tokens } = readReactor(box);
