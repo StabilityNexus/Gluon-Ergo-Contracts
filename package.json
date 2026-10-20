@@ -9,7 +9,7 @@
     "test": "vitest run --testTimeout=30000",
     "typecheck": "tsc --noEmit",
     "verify": "node scripts/verify.ts",
-    "build:sdk": "npm run build -w @stabilitynexus/gluon-ergo-sdk",
+    "build:sdk": "npm run build -w @stability-nexus/gluon-ergo-sdk",
     "check:sdk": "node scripts/check-sdk.ts"
   },
   "dependencies": {

@@ -54,7 +54,7 @@
 [Gluon](https://eprint.iacr.org/2025/1372) is a cryptocurrency stabilization protocol. This repository contains its
 smart contract on [Ergo](https://ergoplatform.org/), the tests that execute it, and the scripts that deploy and operate
 its reactors: Gluon Gold, pegged to one gram of gold, and Gluon Dollar, pegged to one US dollar. The
-[Gluon Ergo SDK](sdk/) (published to npm as `@stabilitynexus/gluon-ergo-sdk`), located in `sdk/`, and the
+[Gluon Ergo SDK](sdk/) (published to npm as `@stability-nexus/gluon-ergo-sdk`), located in `sdk/`, and the
 [Gluon Ergo UI](https://github.com/StabilityNexus/Gluon-Ergo-UI), in its own repository, build users' transactions
 for the reactors.
 
@@ -117,7 +117,7 @@ checks the deployment configs and records (see [Deployments](#deployments)).
 contracts/Gluon.es   the Gluon reactor contract
 config/              public deployment parameters: the node, Gold and Dollar
 lib/                 deployment tooling: compilation, configuration, records, signing and simulation
-sdk/                 the SDK, published to npm as @stabilitynexus/gluon-ergo-sdk
+sdk/                 the SDK, published to npm as @stability-nexus/gluon-ergo-sdk
 test/                contract tests, on a simulated chain
 scripts/             deployment and operation scripts
 deployments/         records of every deployment, per network
@@ -277,7 +277,7 @@ that it yields the recorded ErgoTree, address and template hash. It also checks 
 
 ## SDK
 
-[`sdk/`](sdk/) holds the TypeScript SDK, published to npm as [`@stabilitynexus/gluon-ergo-sdk`](https://www.npmjs.com/package/@stabilitynexus/gluon-ergo-sdk). It reads reactor boxes, computes quotes and analytics, and builds EIP-12 transactions for Gluon v3 reactors on Ergo mainnet.
+[`sdk/`](sdk/) holds the TypeScript SDK, published to npm as [`@stability-nexus/gluon-ergo-sdk`](https://www.npmjs.com/package/@stabilitynexus/gluon-ergo-sdk). It reads reactor boxes, computes quotes and analytics, and builds EIP-12 transactions for Gluon v3 reactors on Ergo mainnet.
 
 - **Build**: `npm run build:sdk` compiles the SDK TypeScript source to `sdk/dist/`.
 - **Packaging check**: `npm run check:sdk` validates package structure, browser safety, and type declarations.

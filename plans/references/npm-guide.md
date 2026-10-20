@@ -98,7 +98,7 @@ to be used for a successful publication within 2 days of its creation.
 1. https://www.npmjs.com → the package → **Settings** → **Trusted Publisher** → **GitHub Actions**.
 2. Fill in:
    - **Organization or user:** `StabilityNexus`;
-   - **Repository:** `Gluon-Ergo-Backend-Contracts`;
+   - **Repository:** `Gluon-Ergo-Contracts`;
    - **Workflow filename:** `release.yml`, the file's name only, with its extension; the file must be in
      `.github/workflows/`;
    - **Environment name:** `npm`;
