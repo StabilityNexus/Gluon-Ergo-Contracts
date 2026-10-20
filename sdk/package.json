@@ -1,6 +1,6 @@
 {
   "name": "@stability-nexus/gluon-ergo-sdk",
-  "version": "2.0.0-next.1",
+  "version": "2.0.1",
   "description": "Read, quote and build transactions for Gluon v3 reactors on Ergo",
   "license": "GPL-3.0-only",
   "type": "module",

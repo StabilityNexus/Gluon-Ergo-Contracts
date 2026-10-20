@@ -6,10 +6,10 @@ const root = resolve(import.meta.dirname, "..");
 const sdk = resolve(root, "sdk");
 
 describe("SDK Package & Documentation (A6)", () => {
-  it("sdk/package.json has correct metadata, version 2.0.0-next.1, and exports", () => {
+  it("sdk/package.json has correct metadata, version 2.0.1, and exports", () => {
     const pkg = JSON.parse(readFileSync(resolve(sdk, "package.json"), "utf8"));
     expect(pkg.name).toBe("@stability-nexus/gluon-ergo-sdk");
-    expect(pkg.version).toBe("2.0.0-next.1");
+    expect(pkg.version).toBe("2.0.1");
     expect(pkg.license).toBe("GPL-3.0-only");
     expect(pkg.type).toBe("module");
     expect(pkg.publishConfig).toEqual({ access: "public", tag: "next" });

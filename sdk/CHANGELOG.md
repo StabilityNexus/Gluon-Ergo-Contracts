@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 (2026-10-20)
+
+- Renamed the npm organization from `@stabilitynexus` to `@stability-nexus`; the package is now published as `@stability-nexus/gluon-ergo-sdk`.
+- No API or behavior changes.
+
 ## 2.0.0-next.1 (2026-10-18)
 
 - Initial pre-release of `@stability-nexus/gluon-ergo-sdk` supporting Gluon v3 reactors on Ergo mainnet.
