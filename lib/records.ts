@@ -8,7 +8,7 @@ import { type NetworkName, formatUnits } from "./config.ts";
 // Deployment records: deployments/<network>.json is the machine-readable record of every reactor that has
 // been deployed, and Deployments.md is generated from it (N3).
 
-export const REPOSITORY_URL = "https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts";
+export const REPOSITORY_URL = "https://github.com/StabilityNexus/Gluon-Ergo-Contracts";
 export const NETWORKS: NetworkName[] = ["mainnet"];
 const EXPLORERS: Record<NetworkName, string> = {
   mainnet: "https://explorer.ergoplatform.com",

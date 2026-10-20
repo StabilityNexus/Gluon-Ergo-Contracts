@@ -1,7 +1,7 @@
 # Gluon v3 migration: the SDK in the contracts repository, and a v3-only static UI on GitHub Pages
 
 *Plan for the maintainers of the contracts repository
-([DjedAlliance/Gluon-Ergo-Backend-Contracts](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts)) and of
+([StabilityNexus/Gluon-Ergo-Contracts](https://github.com/StabilityNexus/Gluon-Ergo-Contracts)) and of
 [StabilityNexus/Gluon-Ergo-UI](https://github.com/StabilityNexus/Gluon-Ergo-UI), written on 2026-10-13. It is meant to
 be executed step by step by a developer or a coding agent, and it is self-contained. The maintainers chose it over two
 other routes, an SDK in a repository of its own and a library inside the UI, because it keeps one copy of the code that
@@ -266,7 +266,7 @@ sdk/                      the package @stability-nexus/gluon-ergo-sdk, an npm wo
   "files": ["dist", "CHANGELOG.md"],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git",
+    "url": "git+https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git",
     "directory": "sdk"
   },
   "publishConfig": { "access": "public", "tag": "next" },
@@ -784,7 +784,7 @@ Notes:
 1. Create the npm organization `stability-nexus`, with at least two owners who use 2FA (guide §2, §3).
 2. Publish the first version, `2.0.0-next.0`, by hand from a clean checkout (guide §4): npm can add a trusted
    publisher only to a package that exists.
-3. Add the trusted publisher: organization `DjedAlliance`, repository `Gluon-Ergo-Backend-Contracts`, workflow
+3. Add the trusted publisher: organization `StabilityNexus`, repository `Gluon-Ergo-Backend-Contracts`, workflow
    filename `release.yml`, environment `npm` (guide §5). It must then be used within 2 days, so add it when the first
    release from CI is ready.
 4. Set the package's publishing access to "Require two-factor authentication and disallow tokens" (guide §6).
@@ -1617,7 +1617,7 @@ organization `stability-nexus`, its package. The UI's maintainers own the UI and
 **Good to know.**
 - If the name `stability-nexus` is already taken on npm, the organization needs another name, and `@stability-nexus`
   changes everywhere (`references/npm-guide.md` §1).
-- The contracts repository is `DjedAlliance/Gluon-Ergo-Backend-Contracts`, while the UI and its forks are in
+- The contracts repository is `StabilityNexus/Gluon-Ergo-Contracts`, while the UI and its forks are in
   `stability-nexus`. The package's `repository` field and its trusted publisher name the contracts repository; if it
   moves, update both (`references/npm-guide.md` §10).
 

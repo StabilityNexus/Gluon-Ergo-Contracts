@@ -13,7 +13,7 @@ version in git; the bootstrap script records the deployment.
 |---|---|
 | Status | superseded |
 | Peg | 1 gram of gold |
-| Contract revision | [`fba4371`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/commit/fba4371a4045a87bfdace5f5a4b0f00c7c1f1339) (tag `v1`) |
+| Contract revision | [`fba4371`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/commit/fba4371a4045a87bfdace5f5a4b0f00c7c1f1339) (tag `v1`) |
 | ErgoTree | version 0, 2781 bytes |
 | Template hash | SHA-256 `5f34a9b06dffdd4610f0ffdf1c6e5254cb38d9f2e21b0343b17195d1da326c65` |
 | Reactor NFT | GluonW NFT: [`797e331df22c…`](https://explorer.ergoplatform.com/en/token/797e331df22c5cfd0aae654703ebc12dcbcba99b80d32e2b7e151eac2d27b6fa), 0 decimals, emission 1 |
@@ -56,7 +56,7 @@ E81MR2gGkYE1vDkdcGYns4wYehfJLdX6hpwHMGrhwKEirNBZ6JRUKopeU1i7jT4NkgdM8GpL8bhFCyXF
 |---|---|
 | Status | live |
 | Peg | 1 gram of gold |
-| Contract revision | [`1c25a67`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/commit/1c25a67b40c7d51e957c24ba4dd42369fbba6917) (tag `v2`) |
+| Contract revision | [`1c25a67`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/commit/1c25a67b40c7d51e957c24ba4dd42369fbba6917) (tag `v2`) |
 | ErgoTree | version 0, 2869 bytes |
 | Template hash | SHA-256 `213dd61e3965fc09881bb94c0b74c77c7eb151b45fb5b7c8290c06db1190c71c` |
 | Reactor NFT | GluonW NFT: [`797e331df22c…`](https://explorer.ergoplatform.com/en/token/797e331df22c5cfd0aae654703ebc12dcbcba99b80d32e2b7e151eac2d27b6fa), 0 decimals, emission 1 |
@@ -133,7 +133,7 @@ HigkPqnDyAhqNLDBF5wnahdbXiNYDiJfA2buYyREwwpgrKGUtPyeFZmsDYeBTpqjnDpEAZiS7Sp3FF8M
 |---|---|
 | Status | unused |
 | Peg | 1 USD |
-| Contract revision | [`2329331`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/commit/2329331f1b922723c1e34496cfee096c41f33a63) |
+| Contract revision | [`2329331`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/commit/2329331f1b922723c1e34496cfee096c41f33a63) |
 | ErgoTree | version 0, 2916 bytes |
 | Template hash | SHA-256 `006fab612c73573d0f3ccce409d92da67ae961aa10a3a6cd0752b17705691c41` |
 | Reactor NFT | Gluon Protocol NFT: [`9fcb277ee225…`](https://explorer.ergoplatform.com/en/token/9fcb277ee225359b8c7e077a74dc67e7d346ab603e87af71228e0b9e529f92e9), 0 decimals, emission 1 |

@@ -66,7 +66,7 @@ The repository will have no license for now.
 
 | ID | Decision | Where it shows up |
 |---|---|---|
-| D1 | `DjedAlliance/Gluon-Ergo-Backend-Contracts` is canonical. The StabilityNexus fork is ignored. | Step 0; audit permalinks; README links |
+| D1 | `StabilityNexus/Gluon-Ergo-Contracts` is canonical. The StabilityNexus fork is ignored. | Step 0; audit permalinks; README links |
 | D2 | TypeScript + Fleet SDK | §3, §5, §6 |
 | D3 | Node 24 LTS + npm + vitest | §3; CI |
 | D4 | No license for now | PR 4 deletes the CC0 `LICENSE`; no `LICENSE.md` is added |
@@ -163,7 +163,7 @@ git rm -r app conf modules project build.sbt .scalafmt.conf fmt.sh Dockerfile .d
 rm -rf modules   # an ignored .DS_Store would otherwise keep the directory alive
 ```
 
-- **Audit links.** Rewrite the 4 relative links (`../modules/...`) in 3 audit reports as permalinks to the commits they audited, for example `https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/blob/369fb81cc09664d25fd29d512ac89a44d6a2306c/modules/gluonw-base/…/GluonWBoxGuardScript.es`. An audit describes a file at one commit, so a permalink is the right reference. It also survives the move and the rename.
+- **Audit links.** Rewrite the 4 relative links (`../modules/...`) in 3 audit reports as permalinks to the commits they audited, for example `https://github.com/StabilityNexus/Gluon-Ergo-Contracts/blob/369fb81cc09664d25fd29d512ac89a44d6a2306c/modules/gluonw-base/…/GluonWBoxGuardScript.es`. An audit describes a file at one commit, so a permalink is the right reference. It also survives the move and the rename.
 - **`.gitignore`.** Replace it with a Node/TypeScript one: `node_modules/`, `.env`, `coverage/`, `.DS_Store`. Keep `unremediated-security-reviews/`.
 - **Not carried over:**
   - the off-chain pricing code, which belongs in the SDK;
@@ -470,7 +470,7 @@ Old testnet deployments are not recorded, because their ids no longer exist on t
 
 **Template-Repo** (HEAD `f46a083`, 2026-02-11) contains exactly 7 files and no `.github/`.
 
-**Org defaults.** GitHub applies issue forms and PR templates from the owning org's `.github` repository, but only to repositories that have none of their own. For this repository that is `DjedAlliance/.github` (D1):
+**Org defaults.** GitHub applies issue forms and PR templates from the owning org's `.github` repository, but only to repositories that have none of their own. For this repository that is `StabilityNexus/.github` (D1):
 
 - its issue forms are identical to StabilityNexus's;
 - its PR template is a variant revised on 2026-03-04.
@@ -481,10 +481,10 @@ Old testnet deployments are not recorded, because their ids no longer exist on t
 | `COPYRIGHT.md` | Add verbatim. Like the template itself, it refers to a `LICENSE.md` that will not exist (D4). |
 | `DCO.md` | Add verbatim. |
 | `Contributors.md` | Add it, with the Discord line pointing to the Gluon channel. Contributors add their own rows, because the table holds personal contact details. |
-| `.coderabbit.yml` | Add, then adapt: path rules for `contracts/**/*.es` (the template has Solidity rules but none for ErgoScript); keep the TypeScript and test rules; drop the Next.js and React Native rules. It only takes effect if CodeRabbit is enabled for the DjedAlliance org. |
+| `.coderabbit.yml` | Add, then adapt: path rules for `contracts/**/*.es` (the template has Solidity rules but none for ErgoScript); keep the TypeScript and test rules; drop the Next.js and React Native rules. It only takes effect if CodeRabbit is enabled for the StabilityNexus org. |
 | `.gitignore` | Do not copy it; it is GitHub's LaTeX list. Keep the Node/TypeScript one from PR 1. |
 | `public/stability.svg` | Add verbatim. Also add `public/gluon.svg` from Gluon-Ergo-UI (`public/logo/gluon.svg`) as the project logo. |
-| Org PR and issue templates | PR 1 deletes the root `pull_request_template.md`, so the DjedAlliance defaults apply. Optionally, add an Ergo-specific PR template modeled on `StabilityNexus/Template-Repo-EVM-Contracts`, with checks such as: accept and reject tests added; records regenerated; transaction-layout changes coordinated with the SDK. |
+| Org PR and issue templates | PR 1 deletes the root `pull_request_template.md`, so the StabilityNexus defaults apply. Optionally, add an Ergo-specific PR template modeled on `StabilityNexus/Template-Repo-EVM-Contracts`, with checks such as: accept and reject tests added; records regenerated; transaction-layout changes coordinated with the SDK. |
 
 **README outline**
 
@@ -498,7 +498,7 @@ Old testnet deployments are not recorded, because their ids no longer exist on t
    - Keep the checklist and tick what is true, for example "deployed to Ergo" (v2 Gold).
    - Delete the mobile-app and web-frontend items.
 4. **Tech Stack:** ErgoScript, TypeScript, Fleet SDK (compiler, mock-chain), vitest, Node 24.
-5. **Getting Started:** prerequisites (Node 24), clone `https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git`, `npm ci`, `npm test`.
+5. **Getting Started:** prerequisites (Node 24), clone `https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git`, `npm ci`, `npm test`.
 6. **Repository Structure:** a short tree.
 7. **The Contract:**
    - **Box layout:** tokens and R4–R9. R5 holds the treasury's SigmaProp; the code calls it `TREASURY_MULTISIG`, but deployments use a single-signature address.
@@ -757,7 +757,7 @@ Setup: Fleet SDK 0.12.0, whose compiler and mock-chain run on `sigmastate-js` 0.
 - **Org templates and examples:**
   - https://github.com/StabilityNexus/Template-Repo
   - https://github.com/StabilityNexus/Template-Repo-EVM-Contracts
-  - https://github.com/DjedAlliance/.github
+  - https://github.com/StabilityNexus/.github
   - https://github.com/StabilityNexus/BenefactionPlatform-Ergo
 - **Other examples:**
   - https://github.com/rosen-bridge/contract

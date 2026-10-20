@@ -3,8 +3,8 @@
 **Date:** 2026-10-11
 **Previous audit:** [GluonWBoxGuardScript-refactoring-audit-2026-10.md](GluonWBoxGuardScript-refactoring-audit-2026-10.md) (audited up to `e50f98c`)
 **Files reviewed:**
-- [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/blob/2cc695d0136013412951bf9fdc71877d69b66e30/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
-- [`modules/gluonw-base/src/main/scala/gluonw/common/GluonWAlgorithm.scala`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/blob/2cc695d0136013412951bf9fdc71877d69b66e30/modules/gluonw-base/src/main/scala/gluonw/common/GluonWAlgorithm.scala)
+- [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/blob/2cc695d0136013412951bf9fdc71877d69b66e30/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
+- [`modules/gluonw-base/src/main/scala/gluonw/common/GluonWAlgorithm.scala`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/blob/2cc695d0136013412951bf9fdc71877d69b66e30/modules/gluonw-base/src/main/scala/gluonw/common/GluonWAlgorithm.scala)
 
 **Commit range:** `e50f98c` (the previous audit's HEAD) → `2cc695d` (current HEAD of `main`)
 

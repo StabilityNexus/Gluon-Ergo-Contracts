@@ -89,7 +89,7 @@ for the reactors.
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git
+git clone https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git
 cd Gluon-Ergo-Backend-Contracts
 ```
 

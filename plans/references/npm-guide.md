@@ -23,7 +23,7 @@ same thing everywhere in the plans.
 |---|---|
 | npm organization and scope | `stability-nexus`, `@stability-nexus` |
 | Package | `@stability-nexus/gluon-ergo-sdk` |
-| Repository that publishes | `DjedAlliance/Gluon-Ergo-Backend-Contracts` |
+| Repository that publishes | `StabilityNexus/Gluon-Ergo-Contracts` |
 | Folder of the package in it | `sdk/`, an npm workspace |
 | Workflow file | `.github/workflows/release.yml` |
 | GitHub environment | `npm` |
@@ -47,7 +47,7 @@ this guide and in the migration plan.
   - `"name": "@stability-nexus/gluon-ergo-sdk"`;
   - `"publishConfig": { "access": "public", "tag": "next" }`: a scoped package is private unless published with public
     access, and pre-releases must not take the `latest` tag;
-  - `"repository": { "type": "git", "url": "git+https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git",
+  - `"repository": { "type": "git", "url": "git+https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git",
     "directory": "sdk" }`. npm requires `repository.url` to match the GitHub repository that publishes.
 
 ## 3. Create the organization
@@ -69,7 +69,7 @@ pre-release under the `next` tag, and nobody needs to install it.
 
 ```sh
 # a clean checkout of the commit to publish
-git clone https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts.git gluon-release
+git clone https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git gluon-release
 cd gluon-release
 git checkout <commit>              # main, once A1 is merged
 npm ci --ignore-scripts
@@ -97,7 +97,7 @@ to be used for a successful publication within 2 days of its creation.
 **On the website:**
 1. https://www.npmjs.com → the package → **Settings** → **Trusted Publisher** → **GitHub Actions**.
 2. Fill in:
-   - **Organization or user:** `DjedAlliance`;
+   - **Organization or user:** `StabilityNexus`;
    - **Repository:** `Gluon-Ergo-Backend-Contracts`;
    - **Workflow filename:** `release.yml`, the file's name only, with its extension; the file must be in
      `.github/workflows/`;
@@ -109,7 +109,7 @@ to be used for a successful publication within 2 days of its creation.
 
 ```sh
 npm trust github @stability-nexus/gluon-ergo-sdk \
-  --repo DjedAlliance/Gluon-Ergo-Backend-Contracts --file release.yml --env npm --allow-publish
+  --repo StabilityNexus/Gluon-Ergo-Contracts --file release.yml --env npm --allow-publish
 npm trust list @stability-nexus/gluon-ergo-sdk
 ```
 

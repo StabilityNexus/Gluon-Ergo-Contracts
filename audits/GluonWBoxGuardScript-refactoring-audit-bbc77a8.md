@@ -1,7 +1,7 @@
 # Refactoring Audit: Commit `bbc77a8` of `GluonWBoxGuardScript.es`
 
 **Date:** 2026-10-11
-**Audited file:** [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/blob/bbc77a86ea555899890fb9f4f09dfcb039abdad2/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
+**Audited file:** [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/blob/bbc77a86ea555899890fb9f4f09dfcb039abdad2/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
 **Audited commit:** `bbc77a8` — "Refactor to remove redundant check" (Zahnentferner, 2026-10-11 05:19:59 +0300)
 **Parent commit:** `186ba5c` — "Fix BUG-18 from refactoring audit remediation review"
 

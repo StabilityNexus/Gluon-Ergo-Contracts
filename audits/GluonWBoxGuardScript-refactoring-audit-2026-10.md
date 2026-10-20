@@ -1,7 +1,7 @@
 # Audit Report: Refactoring of `GluonWBoxGuardScript.es` (October 2026)
 
 **Date:** 2026-10-10
-**Audited file:** [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/DjedAlliance/Gluon-Ergo-Backend-Contracts/blob/e50f98c22184eb9662899da30f8e41d33549a183/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
+**Audited file:** [`modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es`](https://github.com/StabilityNexus/Gluon-Ergo-Contracts/blob/e50f98c22184eb9662899da30f8e41d33549a183/modules/gluonw-base/src/main/resources/ErgoContracts/GluonW/Ergs/BoxGuardScripts/GluonWBoxGuardScript.es)
 **Commit range:** `8216578` (baseline, last commit before 2026-10-01) → `e50f98c` (HEAD of `main`)
 
 ---
