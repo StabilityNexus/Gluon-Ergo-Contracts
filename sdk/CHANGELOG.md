@@ -10,3 +10,4 @@
 - Pure historical analytics functions (`readReactor`, `reactorRegisters`, `oraclePrice`, `oracleAge`, `math`).
 - Structured `GluonError` error codes for clear UX and error handling.
 - Browser-safe zero-Node-dependency build without WASM requirements.
+- .
