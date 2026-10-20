@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StabilityNexus/Gluon-Ergo-Backend-Contracts.git",
+    "url": "git+https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git",
     "directory": "sdk"
   },
   "publishConfig": {
