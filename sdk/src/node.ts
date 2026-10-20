@@ -1,22 +1,17 @@
 import type { Box, SignedTransaction } from "@fleet-sdk/common";
+import JSONBig from "json-bigint";
+import { GluonError } from "./errors.ts";
 
-// Minimal client for an Ergo node's REST API. Amounts can exceed 2^53, so JSON is parsed and written
-// without going through JavaScript numbers.
+const jsonBig = JSONBig({ useNativeBigInt: true });
 
 /** JSON.parse that keeps integers beyond 2^53 exact, as bigint. */
 export function parseJson<T>(text: string): T {
-  return JSON.parse(text, (_key, value, context?: { source?: string }) =>
-    typeof value === "number" && !Number.isSafeInteger(value) && context?.source && /^-?\d+$/.test(context.source)
-      ? BigInt(context.source)
-      : value,
-  );
+  return jsonBig.parse(text) as T;
 }
-
-const rawJSON = (JSON as unknown as { rawJSON(text: string): unknown }).rawJSON;
 
 /** JSON.stringify that writes bigint values as plain JSON numbers. */
 export function stringifyJson(value: unknown, space?: number): string {
-  return JSON.stringify(value, (_key, v) => (typeof v === "bigint" ? rawJSON(v.toString()) : v), space);
+  return jsonBig.stringify(value, undefined, space);
 }
 
 export interface NodeHeader {
@@ -58,11 +53,20 @@ interface NodeBox {
   additionalRegisters: Record<string, string>;
 }
 
+export interface ErgoNodeOptions {
+  fetch?: typeof fetch;
+  timeoutMs?: number;
+}
+
 export class ErgoNode {
   readonly url: string;
+  private readonly fetch: typeof fetch;
+  private readonly timeoutMs: number;
 
-  constructor(url: string) {
+  constructor(url: string, options?: ErgoNodeOptions) {
     this.url = url;
+    this.fetch = options?.fetch ?? globalThis.fetch;
+    this.timeoutMs = options?.timeoutMs ?? 25_000;
   }
 
   async info(): Promise<{ fullHeight: number; parameters: NodeParameters }> {
@@ -111,10 +115,21 @@ export class ErgoNode {
   /** Whether an unconfirmed transaction spends the box. */
   private async spentInMempool(boxId: string): Promise<boolean> {
     const path = `/transactions/unconfirmed/inputs/byBoxId/${boxId}`;
-    const response = await fetch(new URL(path, this.url));
-    if (response.status === 404) return false;
-    await this.read(response, `GET ${path}`);
-    return true;
+    const request = `GET ${path}`;
+    try {
+      const signal = AbortSignal.timeout(this.timeoutMs);
+      const response = await this.fetch(new URL(path, this.url), { signal });
+      if (response.status === 404) return false;
+      if (!response.ok) {
+        const text = await response.text();
+        throw new GluonError("NODE_ERROR", `${request} failed with ${response.status}: ${text}`);
+      }
+      return true;
+    } catch (e) {
+      if (e instanceof GluonError) throw e;
+      const message = e instanceof Error ? e.message : String(e);
+      throw new GluonError("NODE_ERROR", `${request} failed: ${message}`);
+    }
   }
 
   /** Has the node validate a signed transaction without broadcasting it. Returns the transaction id. */
@@ -128,23 +143,51 @@ export class ErgoNode {
   }
 
   private async get<T>(path: string): Promise<T> {
-    const response = await fetch(new URL(path, this.url));
-    return this.read<T>(response, `GET ${path}`);
+    const request = `GET ${path}`;
+    try {
+      const signal = AbortSignal.timeout(this.timeoutMs);
+      const response = await this.fetch(new URL(path, this.url), { signal });
+      return await this.read<T>(response, request);
+    } catch (e) {
+      if (e instanceof GluonError) throw e;
+      const message = e instanceof Error ? e.message : String(e);
+      throw new GluonError("NODE_ERROR", `${request} failed: ${message}`);
+    }
   }
 
   private async post<T>(path: string, body: string): Promise<T> {
-    const response = await fetch(new URL(path, this.url), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body,
-    });
-    return this.read<T>(response, `POST ${path.split("?")[0]}`);
+    const request = `POST ${path.split("?")[0]}`;
+    try {
+      const signal = AbortSignal.timeout(this.timeoutMs);
+      const response = await this.fetch(new URL(path, this.url), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        signal,
+      });
+      return await this.read<T>(response, request);
+    } catch (e) {
+      if (e instanceof GluonError) throw e;
+      const message = e instanceof Error ? e.message : String(e);
+      throw new GluonError("NODE_ERROR", `${request} failed: ${message}`);
+    }
   }
 
   private async read<T>(response: Response, request: string): Promise<T> {
-    const text = await response.text();
-    if (!response.ok) throw new Error(`${request} failed with ${response.status}: ${text}`);
-    return parseJson<T>(text);
+    let text: string;
+    try {
+      text = await response.text();
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      throw new GluonError("NODE_ERROR", `${request} failed: ${message}`);
+    }
+    if (!response.ok) throw new GluonError("NODE_ERROR", `${request} failed with ${response.status}: ${text}`);
+    try {
+      return parseJson<T>(text);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      throw new GluonError("NODE_ERROR", `${request} failed to parse response: ${message}`);
+    }
   }
 }
 
@@ -161,4 +204,29 @@ function toBox(b: NodeBox): Box<bigint> {
     assets: b.assets.map((a) => ({ tokenId: a.tokenId, amount: BigInt(a.amount) })),
     additionalRegisters: b.additionalRegisters,
   };
+}
+
+/**
+ * The unspent box whose first token is `tokenId` (and whose ErgoTree is `ergoTree`, if given): the box the
+ * contract finds by that token. Unconfirmed boxes count, and boxes spent in the mempool do not.
+ */
+export async function findUniqueBox(
+  node: ErgoNode,
+  tokenId: string,
+  what: string,
+  ergoTree?: string,
+): Promise<Box<bigint>> {
+  const boxes = (await node.unspentByTokenId(tokenId)).filter(
+    (b) => b.assets[0]?.tokenId === tokenId && (ergoTree === undefined || b.ergoTree === ergoTree),
+  );
+  if (boxes.length > 1) {
+    throw new GluonError(
+      "BOX_AMBIGUOUS",
+      `${boxes.length} unspent ${what} boxes hold token ${tokenId}: unconfirmed transactions compete to replace the box, so try again after the next block`,
+    );
+  }
+  if (boxes.length === 0) {
+    throw new GluonError("BOX_NOT_FOUND", `no unspent ${what} box holds token ${tokenId} first`);
+  }
+  return boxes[0];
 }

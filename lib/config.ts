@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { AddressType, ErgoAddress, Network } from "@fleet-sdk/core";
 import type { GluonConstants } from "./compile.ts";
-import { ONE, Q_LOWER, Q_UPPER } from "./math.ts";
+import { ONE, Q_LOWER, Q_UPPER } from "../sdk/src/math.ts";
 
 // Public parameters of deployments live in config/*.json (N2). Fields that are not decided yet hold a
 // string starting with "TODO"; scripts refuse to run while a field they need is TODO.

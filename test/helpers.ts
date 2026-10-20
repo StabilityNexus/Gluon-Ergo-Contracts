@@ -5,10 +5,10 @@ import { type KeyedMockChainParty, MockChain, type MockChainParty } from "@fleet
 import { SLong } from "@fleet-sdk/serializer";
 import { expect } from "vitest";
 import { type GluonConstants, compileGluon } from "../lib/compile.ts";
-import { BUCKETS, ONE, type ReactorState, adjustedPrice, bucketStart, genesisSupplies } from "../lib/math.ts";
-import { type ReactorTokens, reactorAssets, reactorRegisters, readReactor } from "../lib/reactor.ts";
+import { BUCKETS, ONE, type ReactorState, adjustedPrice, bucketStart, genesisSupplies } from "../sdk/src/math.ts";
+import { type ReactorTokens, reactorAssets, reactorRegisters, readReactor } from "../sdk/src/reactor.ts";
 import { consensusIssues } from "../lib/simulate.ts";
-import type { TxContext } from "../lib/transactions.ts";
+import type { TxContext } from "../sdk/src/transactions.ts";
 
 /** Chain height when a test starts. Scripts see the height of the next block, HEIGHT + 1. */
 export const HEIGHT = 1_900_000;

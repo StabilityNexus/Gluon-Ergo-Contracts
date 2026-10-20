@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import type { Amount, Box } from "@fleet-sdk/core";
 import { describe, it } from "vitest";
-import { betaDecayMinusTx, betaDecayPlusTx } from "../lib/transactions.ts";
+import { betaDecayMinusTx, betaDecayPlusTx } from "../sdk/src/transactions.ts";
 import { DOLLAR, type Tx, expectAccepted, expectRejected, mutate, setup } from "./helpers.ts";
 
 // The Dollar deployment pays the oracle fee into the USD oracle's DORT buyback box. These tests use that

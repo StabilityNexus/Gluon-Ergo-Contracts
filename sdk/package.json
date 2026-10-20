@@ -1,0 +1,38 @@
+{
+  "name": "@stability-nexus/gluon-ergo-sdk",
+  "version": "2.0.0-next.1",
+  "description": "Read, quote and build transactions for Gluon v3 reactors on Ergo",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StabilityNexus/Gluon-Ergo-Contracts.git",
+    "directory": "sdk"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "next"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@fleet-sdk/common": "0.10.0",
+    "@fleet-sdk/core": "0.12.0",
+    "@fleet-sdk/serializer": "0.11.0",
+    "json-bigint": "1.0.0"
+  }
+}

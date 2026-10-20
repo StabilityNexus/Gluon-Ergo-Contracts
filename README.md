@@ -54,8 +54,8 @@
 [Gluon](https://eprint.iacr.org/2025/1372) is a cryptocurrency stabilization protocol. This repository contains its
 smart contract on [Ergo](https://ergoplatform.org/), the tests that execute it, and the scripts that deploy and operate
 its reactors: Gluon Gold, pegged to one gram of gold, and Gluon Dollar, pegged to one US dollar. The
-[Gluon Ergo SDK](https://github.com/StabilityNexus/Gluon-Ergo-SDK) and the
-[Gluon Ergo UI](https://github.com/StabilityNexus/Gluon-Ergo-UI), in their own repositories, build users' transactions
+[Gluon Ergo SDK](sdk/) (published to npm as `@stabilitynexus/gluon-ergo-sdk`), located in `sdk/`, and the
+[Gluon Ergo UI](https://github.com/StabilityNexus/Gluon-Ergo-UI), in its own repository, build users' transactions
 for the reactors.
 
 ---
@@ -116,7 +116,8 @@ checks the deployment configs and records (see [Deployments](#deployments)).
 ```
 contracts/Gluon.es   the Gluon reactor contract
 config/              public deployment parameters: the node, Gold and Dollar
-lib/                 code shared by tests and scripts: compilation, reference math, transaction builders, node client
+lib/                 deployment tooling: compilation, configuration, records, signing and simulation
+sdk/                 the SDK, published to npm as @stabilitynexus/gluon-ergo-sdk
 test/                contract tests, on a simulated chain
 scripts/             deployment and operation scripts
 deployments/         records of every deployment, per network
@@ -271,6 +272,20 @@ needs a new oracle buyback box first, because the GoldPool's buyback NFT was bur
 that it yields the recorded ErgoTree, address and template hash. It also checks that every config is valid and that
 `Deployments.md` is up to date.
 
+
+---
+
+## SDK
+
+[`sdk/`](sdk/) holds the TypeScript SDK, published to npm as [`@stabilitynexus/gluon-ergo-sdk`](https://www.npmjs.com/package/@stabilitynexus/gluon-ergo-sdk). It reads reactor boxes, computes quotes and analytics, and builds EIP-12 transactions for Gluon v3 reactors on Ergo mainnet.
+
+- **Build**: `npm run build:sdk` compiles the SDK TypeScript source to `sdk/dist/`.
+- **Packaging check**: `npm run check:sdk` validates package structure, browser safety, and type declarations.
+- **Releases**: Automated via `.github/workflows/release.yml` on pushing a tag matching `sdk-v<version>` (where the tag matches `sdk/package.json`), using npm trusted publishing (OIDC with provenance).
+
+### License
+
+The SDK in `sdk/` is licensed under the [GNU General Public License v3.0](sdk/LICENSE) (`GPL-3.0-only`). As decided in the repository cleanup (decision CD4), this license applies to the SDK package only; the repository as a whole has no global license file.
 ---
 
 ## Security & Audits

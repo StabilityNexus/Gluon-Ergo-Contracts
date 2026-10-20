@@ -1,0 +1,41 @@
+name: Release the SDK
+
+on:
+  push:
+    tags: ["sdk-v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-sdk
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write   # npm trusted publishing (OIDC), which also signs the provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # scripts/verify.ts recompiles each deployment from the commit it was deployed from.
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+      - name: The tag must match the package's version
+        run: test "$GITHUB_REF_NAME" = "sdk-v$(node -p "require('./sdk/package.json').version")"
+      - name: npm 11.20.0 (trusted publishing needs 11.5.1 or newer)
+        run: npm install --global npm@11.20.0 && npm --version
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run verify
+      - run: npm run build:sdk
+      - run: npm run check:sdk
+      - run: npm publish -w @stabilitynexus/gluon-ergo-sdk

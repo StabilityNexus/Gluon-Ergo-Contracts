@@ -15,23 +15,22 @@ import {
   checkOrSubmit,
   loadEnvironment,
   nodeFor,
-  requireFreshOracle,
   run,
-  selectFunds,
-  uniqueBox,
 } from "../lib/cli.ts";
 import { formatUnits, readDeployment } from "../lib/config.ts";
-import { type ReactorState, pegAdjustments, snapshot } from "../lib/math.ts";
-import type { ErgoNode } from "../lib/node.ts";
-import { oraclePrice, readReactor } from "../lib/reactor.ts";
+import { type ReactorState, pegAdjustments, snapshot } from "../sdk/src/math.ts";
+import { type ErgoNode, findUniqueBox } from "../sdk/src/node.ts";
+import { oraclePrice, requireFreshOracle } from "../sdk/src/oracle.ts";
+import { readReactor } from "../sdk/src/reactor.ts";
+import { selectInputs } from "../sdk/src/select.ts";
 import { type DeploymentRecord, findDeployment } from "../lib/records.ts";
 import { keyFromEnvironment, signTransaction } from "../lib/signer.ts";
-import { adjustPegTx } from "../lib/transactions.ts";
+import { adjustPegTx } from "../sdk/src/transactions.ts";
 
 /** The reactor box, once the node has the box created by transaction `after` (if given) in its mempool. */
 async function reactorBox(node: ErgoNode, record: DeploymentRecord, after?: string): Promise<Box<bigint>> {
   for (let attempt = 0; ; attempt++) {
-    const box = await uniqueBox(node, record.tokens.nft.id, "reactor", record.ergoTree);
+    const box = await findUniqueBox(node, record.tokens.nft.id, "reactor", record.ergoTree);
     if (!after || box.transactionId === after) return box;
     if (attempt === 30) throw new Error(`the node does not show the reactor box created by ${after}`);
     await sleep(2000);
@@ -63,7 +62,7 @@ run(async () => {
   for (;;) {
     const height = await node.height();
     const reactor = await reactorBox(node, record, previous);
-    const oracle = await uniqueBox(node, record.constants._OraclePoolNFT, "oracle pool");
+    const oracle = await findUniqueBox(node, record.constants._OraclePoolNFT, "oracle pool");
     const { state } = readReactor(reactor);
     const price = oraclePrice(oracle);
     const steps = pegAdjustments(state, minFee, price);
@@ -75,7 +74,9 @@ run(async () => {
     console.log(`${steps.length} adjustment(s) needed, which would reach ${describe(steps[steps.length - 1], price)}`);
 
     requireFreshOracle(oracle, height);
-    const inputs = selectFunds(await node.unspentByAddress(caller), RECOMMENDED_MIN_FEE_VALUE + SAFE_MIN_BOX_VALUE);
+    const inputs = selectInputs(await node.unspentByAddress(caller), {
+      nanoErgs: RECOMMENDED_MIN_FEE_VALUE + SAFE_MIN_BOX_VALUE,
+    });
     const tx = adjustPegTx({ height, minFee, reactor, oracle, inputs, recipient: caller });
     previous = await checkOrSubmit(node, await signTransaction(node, tx, [key]), values.submit);
     if (!values.repeat || steps.length === 1) return;

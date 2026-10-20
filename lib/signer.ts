@@ -2,7 +2,7 @@ import type { EIP12UnsignedTransaction, SignedTransaction } from "@fleet-sdk/com
 import { Network, utxoDiff, utxoSum } from "@fleet-sdk/common";
 import { ErgoHDKey } from "@fleet-sdk/wallet";
 import { type AvlTree, AvlTree$, type BlockchainStateContext, GroupElement$, ProverBuilder$ } from "sigmastate-js/main";
-import type { ErgoNode } from "./node.ts";
+import type { ErgoNode } from "../sdk/src/node.ts";
 
 /**
  * The signing key, derived from MNEMONIC (and the optional MNEMONIC_PASSWORD) in the environment along the

@@ -27,3 +27,6 @@ unremediated-security-reviews/
 # Scala tooling leftovers
 .metals/
 .bloop/
+
+# SDK build output
+sdk/dist/
