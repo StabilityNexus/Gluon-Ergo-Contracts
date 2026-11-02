@@ -283,7 +283,7 @@
             val __outProtonsValueValid: Boolean = ProtonsActualValue == ProtonsExpectedValue
 
             sigmaProp(allOf(Coll(
-                isHealthy, // isHealthyAfter is not necessary, because fission does not change the ratio
+                isHealthy, // isHealthyAfter is not checked: the fee left in the reserve lowers q, but by at most a factor of (1 - phiFission)
                 cSameContract, cSameTokenIdentifiers,
                 __outNeutronsValueValid, __outProtonsValueValid,
                 cSameR4, cSameR5, cSameR7, cSameR8, cSameR9,
@@ -312,7 +312,10 @@
             val __inProtonsValueValid: Boolean = ProtonsActualValue == ProtonsExpectedValue
 
             sigmaProp(allOf(Coll(
-                isHealthy, // isHealthyAfter is not necessary, because fusion does not change the ratio
+                // isHealthyAfter is deliberately not checked. The fee left in the reserve lowers q, by a lot for large
+                // fusions, so a fusion may take q below qLowerThreshold, after which anyone may raise the peg factor.
+                // Checking it would block every fusion while q sits at qLowerThreshold, and the last one ever (q = 0).
+                isHealthy,
                 cSameContract, cSameTokenIdentifiers,  
                 __inNeutronsValueValid, __inProtonsValueValid,
                 cSameR4, cSameR5, cSameR7, cSameR8, cSameR9,
