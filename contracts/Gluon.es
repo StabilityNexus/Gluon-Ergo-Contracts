@@ -312,8 +312,9 @@
             val __inProtonsValueValid: Boolean = ProtonsActualValue == ProtonsExpectedValue
 
             sigmaProp(allOf(Coll(
-                // isHealthyAfter is deliberately not checked. The fee left in the reserve lowers q, by a lot for large
-                // fusions, so a fusion may take q below qLowerThreshold, after which anyone may raise the peg factor.
+                // isHealthyAfter is deliberately not checked. The fee left in the reserve lowers q, slightly for most
+                // fusions but substantially for near-total ones, so a fusion may take q below qLowerThreshold, after
+                // which anyone may raise the peg factor.
                 // Checking it would block every fusion while q sits at qLowerThreshold, and the last one ever (q = 0).
                 isHealthy,
                 cSameContract, cSameTokenIdentifiers,  
