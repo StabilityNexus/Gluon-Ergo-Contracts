@@ -1,8 +1,10 @@
-import { describe, it } from "vitest";
-import { ONE } from "../sdk/src/math.ts";
-import { fusionTx } from "../sdk/src/transactions.ts";
+import { describe, expect, it } from "vitest";
+import { ONE, isHealthy, snapshot } from "../sdk/src/math.ts";
+import { readReactor } from "../sdk/src/reactor.ts";
+import { adjustPegTx, fusionTx } from "../sdk/src/transactions.ts";
 import {
   MAX_DEV_FEE,
+  MIN_FEE,
   PROFILES,
   TOKENS,
   type Tx,
@@ -16,6 +18,7 @@ import {
   mutate,
   publicKey,
   setup,
+  stateOf,
 } from "./helpers.ts";
 
 // Transaction layout: OUTPUTS(0) reactor, OUTPUTS(1) user, OUTPUTS(2) dev fee; the user's remaining tokens
@@ -59,6 +62,20 @@ describe.each(PROFILES)("Fusion ($name)", (profile) => {
   it("accepts a valid fusion once the dev fee is fully repaid", () => {
     const w = setup(profile, { state: () => ({ devFeeRepaid: MAX_DEV_FEE }) });
     expectAccepted(w, fusionTx(w.ctx({ uiFeeKey: publicKey(w.ui) }), ONE));
+  });
+
+  // The fusion fee stays in the reserve and lowers q, and the contract does not check q after a fusion.
+  it("accepts a fusion that takes q below the healthy range, after which anyone may raise the peg", () => {
+    const w = setup(profile, { q: (5001n * ONE) / 10000n });
+    const q = () => snapshot(readReactor(w.ctx().reactor).state, MIN_FEE, profile.oraclePrice).q;
+    expect(isHealthy(q())).toBe(true);
+    expectAccepted(w, fusionTx(w.ctx(), 50n * ONE)); // 5 % of the reserve
+    expect(isHealthy(q())).toBe(false);
+    expect(q()).toBeLessThan(ONE / 2n);
+    const tx = adjustPegTx(w.ctx());
+    expect(stateOf(tx.outputs[0]).pegFactor).toBe((profile.pegFactor * 101n) / 100n);
+    expectAccepted(w, tx);
+    expect(isHealthy(q())).toBe(true);
   });
 
   describe("rejects a fusion when", () => {
